@@ -1,0 +1,23 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm run build)",
+      "Bash(npm run dev)",
+      "Bash(npm install)",
+      "Bash(npm install:*)",
+      "Bash(npx tsc:*)",
+      "Bash(npx tsx:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Edit(.env)",
+      "Write(.env)",
+      "mcp__supabase__*",
+      "mcp__stripe__*",
+      "mcp__vercel__*",
+      "mcp__cloudflare__*"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
