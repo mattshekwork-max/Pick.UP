@@ -19,16 +19,16 @@ If the caller requests a real person or the AI detects an urgent/complex issue, 
 ## Landing Page Copy
 
 **Hero headline:** Your Phone Answered, Every Time
-**Hero subheadline:** Ringley is an AI receptionist that picks up your business calls, books appointments, answers common questions, and sends you a summary. Set it up in minutes, not days.
-**CTA text:** Try Ringley Free
+**Hero subheadline:** Pick.UP is an AI receptionist that picks up your business calls, books appointments, answers common questions, and sends you a summary. Set it up in minutes, not days.
+**CTA text:** Try Pick.UP Free
 
 **How it works headline:** Live in Three Steps
-**How it works subheadline:** Connect your number, tell Ringley about your business, and let it handle the rest.
+**How it works subheadline:** Connect your number, tell Pick.UP about your business, and let it handle the rest.
 
 **Steps:**
-1. **Connect Your Number** - Forward your business line to Ringley or get a new number instantly.
+1. **Connect Your Number** - Forward your business line to Pick.UP or get a new number instantly.
 2. **Set Your Preferences** - Fill in your hours, services, FAQs, and where to route specific calls.
-3. **Ringley Takes Over** - Every call is answered, handled, and summarized via SMS so nothing slips through.
+3. **Pick.UP Takes Over** - Every call is answered, handled, and summarized via SMS so nothing slips through.
 
 **Features:**
 - **Books Appointments Directly** - undefined
@@ -40,7 +40,7 @@ If the caller requests a real person or the AI detects an urgent/complex issue, 
 
 **Final CTA headline:** Stop Missing Calls That Pay Your Bills
 **Final CTA subheadline:** Free to start. Takes about five minutes to set up. No hardware, no contracts.
-**Final CTA button:** Try Ringley Free
+**Final CTA button:** Try Pick.UP Free
 
 ## Database Schema
 

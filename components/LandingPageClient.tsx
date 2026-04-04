@@ -37,7 +37,7 @@ export function LandingPageClient() {
     {
       number: "1",
       title: 'Connect Your Number',
-      description: 'Forward your business line to Ringley or get a new number instantly.',
+      description: 'Forward your business line to Pick.UP or get a new number instantly.',
       icon: Check
     },
     {
@@ -48,7 +48,7 @@ export function LandingPageClient() {
     },
     {
       number: "3",
-      title: 'Ringley Takes Over',
+      title: 'Pick.UP Takes Over',
       description: 'Every call is answered, handled, and summarized via SMS so nothing slips through.',
       icon: Layers
     }
@@ -119,7 +119,7 @@ export function LandingPageClient() {
               className="text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed"
               variants={fadeInUp}
             >
-              Ringley is an AI receptionist that picks up your business calls, books appointments, answers common questions, and sends you a summary. Set it up in minutes, not days.
+              Pick.UP is an AI receptionist that picks up your business calls, books appointments, answers common questions, and sends you a summary. Set it up in minutes, not days.
             </motion.p>
 
             <motion.div
@@ -128,7 +128,7 @@ export function LandingPageClient() {
             >
               <Link href="/auth/login?screen_hint=signup">
                 <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
-                  Try Ringley Free
+                  Try Pick.UP Free
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
@@ -154,7 +154,7 @@ export function LandingPageClient() {
               Live in Three Steps
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Connect your number, tell Ringley about your business, and let it handle the rest.
+              Connect your number, tell Pick.UP about your business, and let it handle the rest.
             </p>
           </motion.div>
 
@@ -208,7 +208,7 @@ export function LandingPageClient() {
               Features
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              What Ringley Does on Every Call
+              What Pick.UP Does on Every Call
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
               Real conversations, real results. Not a phone tree.
@@ -361,7 +361,7 @@ export function LandingPageClient() {
           >
             <Link href="/auth/login?screen_hint=signup">
               <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
-                Try Ringley Free
+                Try Pick.UP Free
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
             </Link>
