@@ -95,9 +95,9 @@ async function getBusinessGreeting(business_id: string): Promise<string> {
   const faqs = data?.faqs || [];
   const services = data?.services || [];
    
-  if (faqs.length > 0) {
+  if (faqs.length > 0 && data) {
     return `Hello! I'm ${data.greeting_message || 'your AI assistant'}. I can help with ${services.join(', ')} or answer questions. What do you need help with?`;
   }
   
-  return data.greeting_message || "Hello! Thanks for calling. How can I help you today?";
+  return data?.greeting_message || "Hello! Thanks for calling. How can I help you today?";
 }
