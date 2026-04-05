@@ -300,7 +300,7 @@ export function LandingPageClient() {
                 Popular
               </div>
               <h3 className="text-lg font-semibold text-gray-900 mb-2">Pro</h3>
-              <div className="text-4xl font-bold text-gray-900 mb-1">$5</div>
+              <div className="text-4xl font-bold text-gray-900 mb-1">$79</div>
               <p className="text-gray-500 mb-6">per month</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2 text-gray-600">
