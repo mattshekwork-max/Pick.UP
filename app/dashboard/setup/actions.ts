@@ -17,7 +17,7 @@ interface BusinessFormData {
 }
 
 export async function saveBusinessProfile(formData: BusinessFormData) {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   // Get current user
   const { data: { user } } = await supabase.auth.getUser();
