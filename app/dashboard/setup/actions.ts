@@ -78,7 +78,7 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
 }
 
 export async function getBusinessProfile() {
-  const supabase = createClient();
+  const supabase = await createClient();
   
   const { data: { user } } = await supabase.auth.getUser();
   
