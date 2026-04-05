@@ -11,7 +11,10 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Save, Phone, Clock, MessageSquare, Calendar } from "lucide-react";
 import { saveBusinessProfile } from "./actions";
 
-const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as const;
+
+type DaySchedule = { open: string; close: string; closed: boolean };
+type BusinessHours = Record<string, DaySchedule>;
 
 export default function BusinessSetupPage() {
   const router = useRouter();
@@ -24,7 +27,7 @@ export default function BusinessSetupPage() {
     greetingMessage: "Hello! Thanks for calling. How can I help you today?",
     services: ["", "", ""],
     faqs: [{ question: "", answer: "" }],
-    businessHours: DAYS.reduce((acc, day) => ({ ...acc, [day]: { open: "09:00", close: "17:00", closed: false } }), {}),
+    businessHours: DAYS.reduce((acc, day) => ({ ...acc, [day]: { open: "09:00", close: "17:00", closed: false } }), {} as BusinessHours),
     googleCalendarId: "",
     timezone: "America/Los_Angeles",
   });
@@ -65,8 +68,8 @@ export default function BusinessSetupPage() {
     setFormData({ ...formData, faqs: [...formData.faqs, { question: "", answer: "" }] });
   };
 
-  const updateHours = (day: string, field: "open" | "close" | "closed", value: string | boolean) => {
-    const currentDay = formData.businessHours[day as keyof typeof formData.businessHours];
+  const updateHours = (day: string, field: keyof DaySchedule, value: string | boolean) => {
+    const currentDay = formData.businessHours[day];
     if (!currentDay) return;
     
     setFormData({
@@ -226,23 +229,23 @@ export default function BusinessSetupPage() {
                   <div className="flex items-center gap-2 flex-1">
                     <Checkbox
                       id={`${day}-closed`}
-                      checked={formData.businessHours[day as keyof typeof formData.businessHours]?.closed}
+                      checked={formData.businessHours[day]?.closed}
                       onCheckedChange={(checked) => updateHours(day, "closed", checked as boolean)}
                     />
                     <Label htmlFor={`${day}-closed`} className="text-sm">Closed</Label>
                   </div>
-                  {!formData.businessHours[day as keyof typeof formData.businessHours]?.closed && (
+                  {!formData.businessHours[day]?.closed && (
                     <>
                       <Input
                         type="time"
-                        value={formData.businessHours[day as keyof typeof formData.businessHours]?.open}
+                        value={formData.businessHours[day]?.open}
                         onChange={(e) => updateHours(day, "open", e.target.value)}
                         className="w-24"
                       />
                       <span>to</span>
                       <Input
                         type="time"
-                        value={formData.businessHours[day as keyof typeof formData.businessHours]?.close}
+                        value={formData.businessHours[day]?.close}
                         onChange={(e) => updateHours(day, "close", e.target.value)}
                         className="w-24"
                       />
