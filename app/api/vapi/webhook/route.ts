@@ -8,12 +8,8 @@ export async function POST(request: Request) {
     const payload = await request.json();
     
     // Verify webhook (in production, verify the signature)
-    if (VAPI_WEBHOOK_SECRET) {
-      const signature = request.headers.get('x-vapi-signature');
-      // Verify signature against VAPI_WEBHOOK_SECRET
-      const expectedSignature = crypto.subtle.sign('SHA-256', VAPI_WEBHOOK_SECRET, JSON.stringify(payload));
-      // In real impl: compare signatures
-    }
+    // TODO: Implement proper webhook signature verification
+    // Vapi sends signature in x-vapi-signature header, needs HMAC verification
     
     const { call_id, business_id, status, transcript, recording_url, duration, appointment } = payload;
     
