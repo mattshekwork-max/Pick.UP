@@ -84,7 +84,7 @@ export async function POST(request: Request) {
 }
 
 async function getBusinessGreeting(business_id: string): Promise<string> {
-  const supabase = createClient();
+  const supabase = await createClient();
   const { data } = await supabase.from('businesses').select('greeting_message,faqs,services').eq('id', business_id).single();
   
   if (data?.greeting_message) {
