@@ -14,7 +14,7 @@ export async function POST(request: Request) {
     const { call_id, business_id, status, transcript, recording_url, duration, appointment } = payload;
     
     // Log the call to Supabase
-    const supabase = createClient();
+    const supabase = await createClient();
     const { error: callError } = await supabase.from('calls').insert({
       business_id,
       caller_phone_number: payload.caller?.phone_number || payload.customer_phone,
