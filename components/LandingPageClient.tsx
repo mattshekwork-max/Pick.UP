@@ -126,7 +126,7 @@ export function LandingPageClient() {
               className="flex flex-col items-center gap-4 pt-4"
               variants={fadeInUp}
             >
-              <Link href="/auth/login?screen_hint=signup">
+              <Link href="/signup">
                 <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
                   Try Pick.UP Free
                   <ArrowRight className="w-4 h-4 ml-2" />
@@ -288,7 +288,7 @@ export function LandingPageClient() {
                   <Check className="w-4 h-4 text-green-600 shrink-0" /> Community support
                 </li>
               </ul>
-              <Link href="/auth/login?screen_hint=signup">
+              <Link href="/signup">
                 <Button variant="outline" className="w-full h-11 cursor-pointer">
                   Get Started
                 </Button>
@@ -316,7 +316,7 @@ export function LandingPageClient() {
                   <Check className="w-4 h-4 text-green-600 shrink-0" /> Advanced features
                 </li>
               </ul>
-              <Link href="/auth/login?screen_hint=signup">
+              <Link href="/signup">
                 <Button className="w-full h-11 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white">
                   Upgrade to Pro
                 </Button>
@@ -359,7 +359,7 @@ export function LandingPageClient() {
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.3 }}
           >
-            <Link href="/auth/login?screen_hint=signup">
+            <Link href="/signup">
               <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
                 Try Pick.UP Free
                 <ArrowRight className="w-4 h-4 ml-2" />
