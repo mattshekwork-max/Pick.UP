@@ -66,11 +66,14 @@ export default function BusinessSetupPage() {
   };
 
   const updateHours = (day: string, field: "open" | "close" | "closed", value: string | boolean) => {
+    const currentDay = formData.businessHours[day as keyof typeof formData.businessHours];
+    if (!currentDay) return;
+    
     setFormData({
       ...formData,
       businessHours: {
         ...formData.businessHours,
-        [day]: { ...formData.businessHours[day as keyof typeof formData.businessHours], [field]: value },
+        [day]: { ...currentDay, [field]: value },
       },
     });
   };
