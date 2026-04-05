@@ -1,4 +1,4 @@
-# Voxadora
+# Pick-UP
 
 AI voice receptionist for every small business
 
