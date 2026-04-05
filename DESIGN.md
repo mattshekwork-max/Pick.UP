@@ -7,7 +7,7 @@ This document is the **design authority** for Voxadora. Every visual decision du
 **Personality:** warm
 **Product:** AI voice receptionist for every small business
 
-This is not a generic SaaS template. Voxadora should look like a product with its own design team — something you'd see on Product Hunt with 500+ upvotes, not something that obviously came from a generator.
+This is not a generic SaaS template. Pick-UP should look like a product with its own design team — something you'd see on Product Hunt with 500+ upvotes, not something that obviously came from a generator.
 
 ## Color System
 
