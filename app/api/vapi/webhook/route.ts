@@ -68,14 +68,16 @@ export async function POST(request: Request) {
             mode: 'transfer',
             message: 'Please hold while I connect you...',
             destination: payload.transfer.phone_number
-          } : {}),
+          }
+        } : {}),
         // If appointment booked, include confirmation
         ...(appointment ? {
           appointmentConfirmation: {
             id: appointmentId,
             time: appointment.time,
             service: appointment.service
-          } : {})
+          }
+        } : {})
       }
     });
     
