@@ -1,4 +1,4 @@
-# Voxadora — Design Specification
+# Pick-UP — Design Specification
 
 This document is the **design authority** for Voxadora. Every visual decision during the build MUST follow this spec. Do not deviate from these choices — they were selected specifically for this product's domain, audience, and brand personality.
 
