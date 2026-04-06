@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Zap, Check, Star, Layers, ArrowRight } from "lucide-react";
+import { Phone, Calendar, MessageSquare, ArrowRight, Check, Clock, Globe, HelpCircle } from "lucide-react";
 
 // Animation variants
 const fadeInUp = {
@@ -38,57 +38,73 @@ export function LandingPageClient() {
       number: "1",
       title: 'Connect Your Number',
       description: 'Forward your business line to Pick.UP or get a new number instantly.',
-      icon: Check
     },
     {
       number: "2",
       title: 'Set Your Preferences',
       description: 'Fill in your hours, services, FAQs, and where to route specific calls.',
-      icon: Star
     },
     {
       number: "3",
       title: 'Pick.UP Takes Over',
       description: 'Every call is answered, handled, and summarized via SMS so nothing slips through.',
-      icon: Layers
     }
   ];
 
   const features = [
     {
       title: 'Books Appointments Directly',
-      description: '',
-      icon: Zap
+      description: 'AI checks your calendar and books meetings instantly',
+      icon: Calendar
     },
     {
       title: 'SMS Call Summaries',
-      description: '',
-      icon: Zap
+      description: 'Get a text after every call with key details',
+      icon: MessageSquare
     },
     {
       title: 'Smart Call Transfers',
-      description: '',
-      icon: Zap
+      description: 'Urgent calls routed to you, instantly',
+      icon: Phone
     },
     {
       title: '90+ Languages',
-      description: '',
-      icon: Zap
+      description: 'Speaks your customers\' language fluently',
+      icon: Globe
     },
     {
       title: 'Sub-Second Response',
-      description: '',
-      icon: Zap
+      description: 'Answers in under a second, every time',
+      icon: Clock
     },
     {
       title: 'Handles Your FAQs',
-      description: '',
-      icon: Zap
+      description: 'Trained on your business, 24/7',
+      icon: HelpCircle
     }
   ];
 
   return (
-    <main className="flex flex-col min-h-screen bg-white overflow-hidden">
+    <main className="flex flex-col min-h-screen bg-[#faf9f7] overflow-hidden font-sans">
+      {/* Navigation */}
+      <nav className="w-full px-6 py-4 flex items-center justify-between">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-[#0D9488] flex items-center justify-center">
+            <Phone className="w-4 h-4 text-white" />
+          </div>
+          <span className="font-heading font-bold text-xl text-gray-900">Pick.UP</span>
+        </div>
+        <div className="flex items-center gap-4">
+          <Link href="/login" className="text-sm font-medium text-gray-600 hover:text-gray-900">
+            Sign in
+          </Link>
+          <Link href="/signup">
+            <Button size="sm" className="bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl">
+              Get Started
+            </Button>
+          </Link>
+        </div>
+      </nav>
       {/* Hero Section */}
       <section className="w-full px-4 pt-6 pb-16 md:pt-12 md:pb-20">
         <div className="container mx-auto max-w-6xl">
@@ -99,17 +115,17 @@ export function LandingPageClient() {
             variants={staggerContainer}
           >
             <motion.div
-              className="inline-flex items-center px-4 py-2 rounded-full bg-blue-50 border border-blue-200"
+              className="inline-flex items-center px-4 py-2 rounded-full bg-[#f0fdfa] border border-[#0D9488]/20"
               variants={fadeInUp}
             >
-              <Zap className="w-4 h-4 text-blue-600 mr-2" />
-              <span className="text-sm font-semibold text-blue-700">
-                Build faster, launch sooner
+              <span className="w-2 h-2 rounded-full bg-[#F97316] mr-2 animate-pulse" />
+              <span className="text-sm font-medium text-[#0D9488]">
+                AI Receptionist for Small Business
               </span>
             </motion.div>
 
             <motion.h1
-              className="text-4xl md:text-5xl lg:text-6xl font-bold tracking-tight text-gray-900 max-w-4xl leading-[1.1]"
+              className="text-4xl md:text-5xl lg:text-6xl font-heading font-bold tracking-tight text-gray-900 max-w-4xl leading-[1.1]"
               variants={fadeInUp}
             >
               Your Phone Answered, Every Time
@@ -127,11 +143,12 @@ export function LandingPageClient() {
               variants={fadeInUp}
             >
               <Link href="/signup">
-                <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
+                <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl shadow-lg hover:shadow-xl transition-all">
                   Try Pick.UP Free
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Button>
               </Link>
+              <p className="text-sm text-gray-500">No credit card required</p>
             </motion.div>
           </motion.div>
         </div>
@@ -147,7 +164,7 @@ export function LandingPageClient() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-sm font-medium text-blue-600 uppercase tracking-wide mb-3">
+            <p className="text-sm font-medium text-[#0D9488] uppercase tracking-wide mb-3">
               How it works
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -174,14 +191,10 @@ export function LandingPageClient() {
                 transition={{ duration: 0.2 }}
               >
                 <div className="flex flex-col h-full items-center text-center">
-                  <motion.div
-                    className="mb-6 flex flex-col items-center"
-                    whileHover={{ scale: 1.1, rotate: 5 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <step.icon className="w-16 h-16 text-blue-600 mb-6" strokeWidth={1.5} />
-                  </motion.div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
+                  <div className="w-12 h-12 rounded-xl bg-[#0D9488]/10 flex items-center justify-center mb-4">
+                    <span className="font-heading font-bold text-xl text-[#0D9488]">{step.number}</span>
+                  </div>
+                  <h3 className="text-xl font-heading font-semibold text-gray-900 mb-3">
                     {step.title}
                   </h3>
                   <p className="text-gray-600 leading-relaxed">
@@ -204,7 +217,7 @@ export function LandingPageClient() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-sm font-medium text-blue-600 uppercase tracking-wide mb-3">
+            <p className="text-sm font-medium text-[#0D9488] uppercase tracking-wide mb-3">
               Features
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -225,21 +238,18 @@ export function LandingPageClient() {
             {features.map((feature, index) => (
               <motion.div
                 key={index}
-                className="group p-8 rounded-xl border border-gray-200 bg-white hover:border-gray-300 hover:shadow-sm transition-all cursor-pointer"
+                className="group p-8 rounded-xl border border-gray-200 bg-white hover:border-[#0D9488]/30 hover:shadow-lg transition-all cursor-pointer"
                 variants={scaleIn}
-                whileHover={{ y: -5, boxShadow: "0 10px 25px -5px rgba(0, 0, 0, 0.1)" }}
+                whileHover={{ y: -5 }}
                 transition={{ duration: 0.2 }}
               >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: 5 }}
-                  transition={{ duration: 0.3 }}
-                >
-                  <feature.icon className="w-10 h-10 text-gray-900 mb-5" strokeWidth={1.5} />
-                </motion.div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                <div className="w-12 h-12 rounded-xl bg-[#0D9488]/10 flex items-center justify-center mb-5">
+                  <feature.icon className="w-6 h-6 text-[#0D9488]" />
+                </div>
+                <h3 className="text-lg font-heading font-semibold text-gray-900 mb-2">
                   {feature.title}
                 </h3>
-                <p className="text-gray-600 leading-relaxed">
+                <p className="text-gray-600 leading-relaxed text-sm">
                   {feature.description}
                 </p>
               </motion.div>
@@ -258,7 +268,7 @@ export function LandingPageClient() {
             viewport={{ once: true, margin: "-100px" }}
             transition={{ duration: 0.5 }}
           >
-            <p className="text-sm font-medium text-blue-600 uppercase tracking-wide mb-3">
+            <p className="text-sm font-medium text-[#0D9488] uppercase tracking-wide mb-3">
               Pricing
             </p>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -277,7 +287,7 @@ export function LandingPageClient() {
             variants={staggerContainer}
           >
             <motion.div className="p-8 rounded-xl border border-gray-200 bg-white" variants={scaleIn}>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Free</h3>
+              <h3 className="text-lg font-heading font-semibold text-gray-900 mb-2">Free</h3>
               <div className="text-4xl font-bold text-gray-900 mb-1">$0</div>
               <p className="text-gray-500 mb-6">Forever free</p>
               <ul className="space-y-3 mb-8">
@@ -295,11 +305,11 @@ export function LandingPageClient() {
               </Link>
             </motion.div>
 
-            <motion.div className="p-8 rounded-xl border-2 border-blue-600 bg-white relative" variants={scaleIn}>
-              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-blue-600 text-white text-xs font-medium rounded-full">
+            <motion.div className="p-8 rounded-xl border-2 border-[#0D9488] bg-white relative" variants={scaleIn}>
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2 px-3 py-1 bg-[#0D9488] text-white text-xs font-medium rounded-full">
                 Popular
               </div>
-              <h3 className="text-lg font-semibold text-gray-900 mb-2">Pro</h3>
+              <h3 className="text-lg font-heading font-semibold text-gray-900 mb-2">Pro</h3>
               <div className="text-4xl font-bold text-gray-900 mb-1">$79</div>
               <p className="text-gray-500 mb-6">per month</p>
               <ul className="space-y-3 mb-8">
@@ -317,7 +327,7 @@ export function LandingPageClient() {
                 </li>
               </ul>
               <Link href="/signup">
-                <Button className="w-full h-11 cursor-pointer bg-blue-600 hover:bg-blue-700 text-white">
+                <Button className="w-full h-11 cursor-pointer bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl">
                   Upgrade to Pro
                 </Button>
               </Link>
@@ -336,7 +346,7 @@ export function LandingPageClient() {
           transition={{ duration: 0.5 }}
         >
           <motion.h2
-            className="text-4xl md:text-5xl font-bold text-gray-900 mb-6"
+            className="text-4xl md:text-5xl font-heading font-bold text-gray-900 mb-6"
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
@@ -360,7 +370,7 @@ export function LandingPageClient() {
             transition={{ duration: 0.5, delay: 0.3 }}
           >
             <Link href="/signup">
-              <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-blue-600 hover:bg-blue-700 text-white shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 transition-all duration-200 active:translate-y-0 active:shadow-lg">
+              <Button size="lg" className="px-8 h-12 text-base font-medium cursor-pointer bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl shadow-lg hover:shadow-xl transition-all">
                 Try Pick.UP Free
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>

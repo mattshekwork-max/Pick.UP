@@ -8,8 +8,9 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Phone, CheckCircle } from "lucide-react";
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "My App";
+const APP_NAME = "Pick.UP";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
@@ -53,19 +54,22 @@ export default function SignupPage() {
 
   if (success) {
     return (
-      <div className="min-h-screen flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
-          <CardHeader className="text-center">
-            <CardTitle className="text-2xl">Check your email</CardTitle>
-            <CardDescription>
+      <div className="min-h-screen flex items-center justify-center p-4 bg-[#faf9f7]">
+        <Card className="w-full max-w-md border-gray-200 shadow-lg rounded-xl">
+          <CardHeader className="text-center space-y-4">
+            <div className="w-16 h-16 rounded-full bg-[#0D9488]/10 flex items-center justify-center mx-auto">
+              <CheckCircle className="w-8 h-8 text-[#0D9488]" />
+            </div>
+            <CardTitle className="text-2xl font-heading font-bold text-gray-900">Check your email</CardTitle>
+            <CardDescription className="text-gray-600">
               We sent a confirmation link to <strong>{email}</strong>.
               Click the link to activate your account.
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <p className="text-center text-sm text-muted-foreground">
+            <p className="text-center text-sm text-gray-600">
               Already confirmed?{" "}
-              <Link href="/login" className="text-primary hover:underline">
+              <Link href="/login" className="text-[#0D9488] hover:text-[#0d857c] font-medium hover:underline">
                 Sign in
               </Link>
             </p>
@@ -76,16 +80,21 @@ export default function SignupPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="text-center">
-          <CardTitle className="text-2xl">{APP_NAME}</CardTitle>
-          <CardDescription>Create your account</CardDescription>
+    <div className="min-h-screen flex items-center justify-center p-4 bg-[#faf9f7]">
+      <Card className="w-full max-w-md border-gray-200 shadow-lg rounded-xl">
+        <CardHeader className="text-center space-y-4">
+          <div className="flex items-center justify-center gap-2">
+            <div className="w-10 h-10 rounded-xl bg-[#0D9488] flex items-center justify-center">
+              <Phone className="w-5 h-5 text-white" />
+            </div>
+            <CardTitle className="text-2xl font-heading font-bold text-gray-900">{APP_NAME}</CardTitle>
+          </div>
+          <CardDescription className="text-gray-600">Create your account</CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSignup} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-gray-700">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -93,10 +102,11 @@ export default function SignupPage() {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-gray-700">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -105,18 +115,23 @@ export default function SignupPage() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
                 minLength={6}
+                className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
               />
             </div>
             {error && (
-              <p className="text-sm text-destructive">{error}</p>
+              <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
             )}
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button 
+              type="submit" 
+              className="w-full bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl h-11 font-medium" 
+              disabled={loading}
+            >
               {loading ? "Creating account..." : "Create account"}
             </Button>
           </form>
-          <p className="text-center text-sm text-muted-foreground mt-4">
+          <p className="text-center text-sm text-gray-600 mt-6">
             Already have an account?{" "}
-            <Link href="/login" className="text-primary hover:underline">
+            <Link href="/login" className="text-[#0D9488] hover:text-[#0d857c] font-medium hover:underline">
               Sign in
             </Link>
           </p>
