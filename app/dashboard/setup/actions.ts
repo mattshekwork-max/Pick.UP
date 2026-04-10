@@ -68,7 +68,7 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
   
   if (result.error) {
     console.error("Failed to save business:", result.error);
-    return { success: false, error: "Failed to save business profile" };
+    return { success: false, error: `${result.error.message || 'Failed to save'} - ${result.error.details || ''}`.trim() };
   }
   
   revalidatePath("/dashboard");
