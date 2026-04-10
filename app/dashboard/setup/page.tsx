@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -24,6 +24,10 @@ export default function BusinessSetupPage() {
   const [areaCode, setAreaCode] = useState("");
   const [provisioning, setProvisioning] = useState(false);
   const [provisionedPhone, setProvisionedPhone] = useState<string | null>(null);
+  const [autoSaving, setAutoSaving] = useState(false);
+  const [lastSaved, setLastSaved] = useState<Date | null>(null);
+  const saveTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  
   const [formData, setFormData] = useState({
     businessName: "",
     phoneNumber: "",
@@ -36,20 +40,65 @@ export default function BusinessSetupPage() {
     timezone: "America/Los_Angeles",
   });
 
+  // Auto-save function with debouncing
+  const autoSave = useCallback(async (data: typeof formData) => {
+    // Don't auto-save if business name is empty (required field)
+    if (!data.businessName.trim()) return;
+    
+    setAutoSaving(true);
+    
+    const result = await saveBusinessProfile(data);
+    
+    if (result.success) {
+      setLastSaved(new Date());
+    } else {
+      setError(result.error || "Auto-save failed");
+    }
+    
+    setAutoSaving(false);
+  }, []);
+
+  // Debounced auto-save effect
+  useEffect(() => {
+    // Clear existing timeout
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
+    // Set new timeout to save after 2 seconds of no changes
+    saveTimeoutRef.current = setTimeout(() => {
+      autoSave(formData);
+    }, 2000);
+    
+    return () => {
+      if (saveTimeoutRef.current) {
+        clearTimeout(saveTimeoutRef.current);
+      }
+    };
+  }, [formData, autoSave]);
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    // Cancel pending auto-save
+    if (saveTimeoutRef.current) {
+      clearTimeout(saveTimeoutRef.current);
+    }
+    
     setLoading(true);
     setError(null);
 
     const result = await saveBusinessProfile(formData);
     
     if (result.success) {
+      setLastSaved(new Date());
       router.push("/dashboard");
       router.refresh();
     } else {
       setError(result.error || "Failed to save profile");
-      setLoading(false);
     }
+    
+    setLoading(false);
   };
 
   const updateService = (index: number, value: string) => {
