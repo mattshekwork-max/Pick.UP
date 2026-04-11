@@ -90,6 +90,9 @@ END CALL GRACEFULLY:
 - Wait for caller to hang up first`;
 
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
+
     const response = await fetch(`https://api.vapi.ai/v1/assistant/${VAPI_ASSISTANT_ID}`, {
       method: "PATCH",
       headers: {
@@ -107,7 +110,10 @@ END CALL GRACEFULLY:
           ],
         },
       }),
+      signal: controller.signal,
     });
+
+    clearTimeout(timeoutId);
 
     if (response.ok) {
       console.log("✅ Vapi assistant updated for:", business.business_name);
@@ -116,7 +122,7 @@ END CALL GRACEFULLY:
       console.error("❌ Failed to update Vapi assistant:", response.status, errorText);
     }
   } catch (error) {
-    console.error("Vapi update error:", error);
+    console.error("Vapi update error (non-blocking):", error);
   }
 }
 
@@ -176,11 +182,15 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
   }
 
   // Update Vapi assistant with new business profile
+  // Run async without blocking the save (fire-and-forget)
   const updatedBusiness = existingBusiness 
     ? { ...businessData, id: existingBusiness.id }
     : { ...businessData, id: (result.data as any)?.id };
   
-  await updateVapiAssistant(updatedBusiness);
+  // Don't await - let it complete in background
+  updateVapiAssistant(updatedBusiness).catch(err => {
+    console.error("Vapi assistant update failed (non-blocking):", err);
+  });
   
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/setup");
