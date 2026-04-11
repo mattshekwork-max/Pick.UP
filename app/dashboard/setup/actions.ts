@@ -35,7 +35,7 @@ async function updateVapiAssistant(business: any) {
     : "No FAQs configured";
 
   // Format services
-  const servicesText = business.services?.filter(s => s.trim()).join(", ") || "Not specified";
+  const servicesText = business.services?.filter((s: string) => s.trim()).join(", ") || "Not specified";
 
   // Format business hours
   const hoursText = business.business_hours
