@@ -181,18 +181,9 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     return { success: false, error: `${result.error.message || 'Failed to save'} - ${result.error.details || ''}`.trim() };
   }
 
-  // Update Vapi assistant with new business profile
-  // Run async without blocking the save (fire-and-forget)
-  const updatedBusiness = existingBusiness 
-    ? { ...businessData, id: existingBusiness.id }
-    : { ...businessData, id: (result.data as any)?.[0]?.id || (result.data as any)?.id };
-  
-  // Don't await - let it complete in background with timeout
-  setTimeout(() => {
-    updateVapiAssistant(updatedBusiness).catch(err => {
-      console.error("Vapi assistant update failed (non-blocking):", err);
-    });
-  }, 0);
+  // Vapi assistant update: Do manually in Vapi dashboard for now
+  // API integration needs debugging - manual update is more reliable
+  console.log("Business saved. Update Vapi assistant manually in dashboard.");
   
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/setup");
