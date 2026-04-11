@@ -16,6 +16,110 @@ interface BusinessFormData {
   timezone: string;
 }
 
+/**
+ * Update Vapi assistant with business profile
+ * This makes the AI respond with the correct business info
+ */
+async function updateVapiAssistant(business: any) {
+  const VAPI_API_KEY = process.env.VAPI_API_KEY;
+  const VAPI_ASSISTANT_ID = process.env.VAPI_ASSISTANT_ID;
+
+  if (!VAPI_API_KEY || !VAPI_ASSISTANT_ID) {
+    console.log("Vapi not configured, skipping assistant update");
+    return;
+  }
+
+  // Format FAQs for system message
+  const faqsText = business.faqs?.length > 0
+    ? business.faqs.map((f: any) => `Q: ${f.question}\nA: ${f.answer}`).join("\n\n")
+    : "No FAQs configured";
+
+  // Format services
+  const servicesText = business.services?.filter(s => s.trim()).join(", ") || "Not specified";
+
+  // Format business hours
+  const hoursText = business.business_hours
+    ? Object.entries(business.business_hours)
+        .filter(([_, hours]: any) => !hours.closed)
+        .map(([day, hours]: any) => `${day}: ${hours.open} - ${hours.close}`)
+        .join("\n")
+    : "Not specified";
+
+  // Build dynamic system message
+  const systemMessage = `You are a professional AI receptionist for ${business.business_name}.
+
+YOUR ROLE:
+- Answer calls warmly and professionally
+- Handle common questions using the business's FAQ
+- Book appointments into their Google Calendar
+- Transfer calls when requested or when you can't help
+
+BUSINESS INFORMATION:
+- Business Name: ${business.business_name}
+- Services: ${servicesText}
+- Business Hours: ${hoursText}
+- Greeting: ${business.greeting_message || "Hello! Thanks for calling."}
+- Transfer Number: ${business.transfer_phone_number || "Not configured"}
+
+FAQ RESPONSES:
+${faqsText}
+
+GUIDELINES:
+1. Be concise and friendly
+2. Confirm details before booking appointments
+3. If caller asks for a human, transfer immediately
+4. If you're unsure, offer to transfer
+5. Always get: name, phone, service type, and preferred time for appointments
+
+APPOINTMENT BOOKING:
+- Use the book_appointment function when caller wants to schedule
+- Confirm: date, time, service, customer name, phone
+- Default appointment duration: 1 hour
+- Check business hours before offering times
+
+CALL TRANSFERS:
+- Use transfer_call function when:
+  * Caller explicitly requests a human
+  * You can't answer their question
+  * It's outside business hours
+  * Complex pricing or custom quotes needed
+
+END CALL GRACEFULLY:
+- Confirm next steps
+- Thank them for calling
+- Wait for caller to hang up first`;
+
+  try {
+    const response = await fetch(`https://api.vapi.ai/v1/assistant/${VAPI_ASSISTANT_ID}`, {
+      method: "PATCH",
+      headers: {
+        "Authorization": `Bearer ${VAPI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        firstMessage: business.greeting_message || "Hello! Thanks for calling. How can I help you today?",
+        model: {
+          messages: [
+            {
+              role: "system",
+              content: systemMessage,
+            },
+          ],
+        },
+      }),
+    });
+
+    if (response.ok) {
+      console.log("✅ Vapi assistant updated for:", business.business_name);
+    } else {
+      const errorText = await response.text();
+      console.error("❌ Failed to update Vapi assistant:", response.status, errorText);
+    }
+  } catch (error) {
+    console.error("Vapi update error:", error);
+  }
+}
+
 export async function saveBusinessProfile(formData: BusinessFormData) {
   const supabase = await createClient();
   
@@ -70,6 +174,13 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     console.error("Failed to save business:", result.error);
     return { success: false, error: `${result.error.message || 'Failed to save'} - ${result.error.details || ''}`.trim() };
   }
+
+  // Update Vapi assistant with new business profile
+  const updatedBusiness = existingBusiness 
+    ? { ...businessData, id: existingBusiness.id }
+    : { ...businessData, id: (result.data as any)?.id };
+  
+  await updateVapiAssistant(updatedBusiness);
   
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/setup");
