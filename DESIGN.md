@@ -4,80 +4,93 @@ This document is the **design authority** for Voxadora. Every visual decision du
 
 ## Brand Identity
 
-**Personality:** warm
+**Personality:** professional, trustworthy, modern
 **Product:** AI voice receptionist for every small business
 
-This is not a generic SaaS template. Pick-UP should look like a product with its own design team — something you'd see on Product Hunt with 500+ upvotes, not something that obviously came from a generator.
+This is not a generic SaaS template. Pick-UP should look like enterprise-grade software — something you'd see in Google Cloud Console or AWS dashboard. Clean, professional, and built for business owners who want reliability over flashiness.
 
 ## Color System
 
-All colors use oklch() format in Tailwind CSS v4. Convert these hex values to oklch() when writing CSS variables.
+All colors use oklch() format in Tailwind CSS v4.
 
-| Role | Hex | Usage |
-|------|-----|-------|
-| **Primary** | #0D9488 | Brand color. Primary buttons, active nav states, key UI accents, links. |
-| **Secondary** | #f0fdfa | Supporting elements. Secondary buttons, section backgrounds, subtle borders. |
-| **Accent** | #F97316 | Highlight sparingly. Success states, badges, notification dots, hover effects. |
-| **Background** | #faf9f7 | Page background. NOT pure white. This subtle tint creates warmth/coolness. |
+### Dark Theme (Default)
+
+| Role | OKLCH | Usage |
+|------|-------|-------|
+| **Background** | `oklch(0.13 0.02 260)` | Deep blue-black. Main app background, sidebar. |
+| **Card/Surface** | `oklch(0.18 0.02 260)` | Cards, panels, elevated surfaces. Slightly lighter than background. |
+| **Border** | `oklch(0.28 0.02 260)` | Subtle borders, dividers, input borders. |
+| **Primary** | `oklch(0.75 0.12 200)` | Teal/cyan accent. Primary buttons, active states, links. |
+| **Secondary** | `oklch(0.22 0.02 260)` | Secondary buttons, muted backgrounds, hover states. |
+| **Accent** | `oklch(0.7 0.15 160)` | Green accent. Success states, positive metrics. |
+| **Foreground** | `oklch(0.95 0.01 260)` | Primary text, icons. |
+| **Muted Foreground** | `oklch(0.7 0.02 260)` | Secondary text, labels, placeholders. |
 
 **Color rules:**
-- Primary color appears on every screen but is never overwhelming — it should guide the eye, not assault it
-- Secondary color does the heavy lifting for borders, dividers, muted text, inactive states
-- Accent is the "pop" — use it for max 2-3 elements per screen
-- Derive hover/active/disabled states from the primary: hover = slightly darker, active = darker still, disabled = 40% opacity
-- Dark mode (if applicable): invert the value scale, keep the hue. Don't just slap `dark:` classes — redesign the palette for dark backgrounds.
+- Dark theme is the DEFAULT and PRIMARY theme for Pick.UP
+- Background is a deep blue-black, NOT pure black — creates depth without harshness
+- Cards are slightly lighter than background to create subtle elevation
+- Borders are visible but subtle — they define structure without dominating
+- Primary color (teal/cyan) is used sparingly for key actions and active states
+- Accent (green) is reserved for success states and positive metrics only
+- Text is high-contrast white/off-white for readability in low-light environments
 
 ## Typography
 
-| Role | Font | Weight | Tracking |
-|------|------|--------|----------|
-| **Headings** | Sora | 600-700 | tight (-0.02em) |
-| **Body** | Plus Jakarta Sans | 400-500 | normal |
-| **Mono/Data** | System mono stack | 400 | normal |
+| Role | Font | Weight | Usage |
+|------|------|--------|-------|
+| **Headings** | Google Sans | 500-600 | h1-h3, section titles, card headers |
+| **Body** | Roboto | 400-500 | Body text, buttons, labels, form inputs, navigation |
+| **Mono/Data** | System mono stack | 400 | Code, API keys, technical data |
 
 **Typography rules:**
-- Import BOTH fonts via `@import` at the VERY TOP of `globals.css`, BEFORE all other CSS
-- Heading font is for h1-h3 ONLY. Do not use it for buttons, labels, or body text.
-- Body font handles everything else: paragraphs, buttons, nav, labels, form inputs
-- Use `max-w-prose` or `max-w-2xl` for body text blocks — never let text run full-width
-- Font size hierarchy: h1=2.25rem, h2=1.5rem, h3=1.25rem, body=0.875-1rem. Be consistent.
+- Import BOTH fonts via `@import` at the VERY TOP of `globals.css`
+- Google Sans is Google's proprietary font — clean, modern, professional
+- Roboto is highly readable at all sizes, perfect for dense dashboards
+- Font size hierarchy: h1=2rem, h2=1.5rem, h3=1.25rem, body=0.875rem
+- Use tighter line-height for headings (1.2-1.3), normal for body (1.5-1.6)
+- Text color: Foreground for primary content, Muted Foreground for labels/placeholders
 
 ## Component Design Language
 
-### Border Radius: rounded (12px)
+### Border Radius: md (8px)
 
-Warm, friendly, inviting. Buttons feel touchable. Cards feel like physical objects you want to pick up. Everything feels soft and approachable.
+Professional, clean, modern. Not too rounded (friendly) but not sharp (aggressive). Matches enterprise software like Google Cloud Console, AWS, Stripe Dashboard.
 
-**Apply consistently:** buttons, cards, inputs, dropdowns, modals, badges, tooltips, images — everything shares the same radius system. The ONLY exception is avatars (always fully rounded) and very small badges/pills (can be fully rounded regardless of system).
+**Apply consistently:** buttons, cards, inputs, dropdowns, modals, badges. The ONLY exception is avatars (always fully rounded) and very small pills (can be fully rounded).
+
+**Radius values:**
+- `--radius: 0.5rem` (8px) base
+- Buttons, cards, inputs: `rounded-md` (8px)
+- Badges, pills: `rounded-full` (fully rounded)
+- Avatars: `rounded-full` (fully rounded)
 
 ### Component Personality
 
-**Warm personality** — friendly, approachable, feels like a helpful friend.
-- **Buttons:** Rounded, inviting fills. Primary buttons should feel "clickable" — consider subtle shadows or gradients. Icon+text buttons encouraged.
-- **Cards:** Rounded corners, soft shadows. Cards should feel like friendly containers. Consider colored left borders or top accent bars for variety.
-- **Navigation:** Friendly top nav with avatar. Active states use the primary color warmly. Consider emoji or icons next to nav labels.
-- **Data display:** Card-based over tables. Visual progress indicators (bars, rings). Friendly data viz with rounded chart elements.
-- **Interactions:** Medium speed (200ms). Hover states should feel inviting (slight lift, warm color shift). Consider micro-animations.
-- **Empty states:** Illustrated, encouraging, with personality. "No projects yet — let's create your first one!" with a friendly illustration.
-- **Modals vs drawers:** Modals for celebrations and important moments. Drawers for editing. Inline expansion for small actions.
-- **shadcn components to favor:** Card, Avatar, Progress, Badge, HoverCard, Popover, Alert (for friendly notices), Carousel.
+**Professional dashboard personality** — clean, efficient, built for power users who value clarity over cuteness.
+
+- **Buttons:** Medium weight, subtle borders. Primary buttons use teal accent. Hover states are subtle (slight brightness increase, no dramatic shadows).
+- **Cards:** Subtle borders, minimal shadows. Cards are defined by borders and background color contrast, not drop shadows. Left border accents for status.
+- **Navigation:** Clean sidebar or top nav. Active states use teal underline or background. Minimal ornamentation.
+- **Data display:** Tables for dense data, cards for summaries. Metrics use large numbers with muted labels. Charts use the teal/green accent palette.
+- **Interactions:** Fast (150ms). Hover states are subtle. Focus states are clear (teal outline). No bouncy animations.
+- **Empty states:** Simple illustrations or icons with clear CTAs. Professional tone, not cutesy.
+- **Modals vs drawers:** Modals for confirmations and forms. Drawers for detailed views. Keep them clean and focused.
+- **shadcn components to favor:** Card, Button, Input, Label, Table, Badge, Alert, Dialog, Sheet, Tabs, Progress
 
 ### Layout Architecture
 
-**Hero layout:** split
-- Left side: headline, subheadline, CTA. Right side: product illustration/screenshot/visual.
-- The visual side should be at least 45% of the width. Don't cram it.
-
-**Feature layout:** bento
-- Mixed-size grid: 1-2 large hero cards + smaller supporting cards.
-- Large cards get more visual treatment (illustration, screenshot, demo).
-- This is NOT a uniform 3-column grid — vary the sizes intentionally.
-
 **Dashboard layout:**
-- Use a sidebar navigation for 4+ sections, top tabs for 2-3 sections
-- Main content area: max-w-6xl with consistent horizontal padding
+- Sidebar navigation for 4+ sections (Dashboard, Calls, Appointments, Settings)
+- Top tabs for 2-3 sections within a category
+- Main content area: max-w-7xl with consistent horizontal padding (24-32px)
 - Cards for distinct data groups, tables for list data
 - Every screen needs a clear primary action (top-right button or inline CTA)
+
+**Feature sections:**
+- Use a clean grid layout (2-3 columns) for feature cards
+- Large cards for main features, smaller for supporting features
+- Consistent padding and spacing throughout
 
 ### Spacing & Density
 
@@ -90,11 +103,14 @@ Warm, friendly, inviting. Buttons feel touchable. Cards feel like physical objec
 
 ### Shadows & Elevation
 
-- Cards: `shadow-sm` default, `shadow-md` on hover (if interactive)
-- Modals/drawers: `shadow-xl`
-- Buttons: no shadow (unless the brand personality calls for it)
+- Cards: NO shadow by default — use borders for definition
+- Interactive cards: `shadow-sm` on hover ONLY
+- Modals/drawers: `shadow-2xl` (high contrast against dark background)
+- Buttons: NO shadow (flat, modern)
 - Dropdowns/popovers: `shadow-lg`
-- Never use `shadow-2xl` — it looks like a 2015 Material Design demo
+- Elevation is created through background color contrast, NOT shadows
+
+**Key principle:** In dark themes, shadows are less visible. Use background color contrast and borders to define hierarchy.
 
 ### Icons
 
