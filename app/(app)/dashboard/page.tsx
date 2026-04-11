@@ -54,7 +54,7 @@ export default async function Dashboard() {
     { name: "Create business profile", complete: hasBusinessProfile },
     { name: "Add your phone number", complete: hasPhoneNumber },
     { name: "Set AI greeting", complete: hasGreeting },
-    { name: "Connect Vapi (optional)", complete: false },
+    { name: "Add call forwarding number (optional)", complete: false },
   ];
 
   const completedSteps = setupSteps.filter(s => s.complete).length;
