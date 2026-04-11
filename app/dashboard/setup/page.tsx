@@ -365,15 +365,17 @@ export default function BusinessSetupPage() {
               {DAYS.map((day) => (
                 <div key={day} className="flex items-center gap-4">
                   <div className="w-28 font-medium">{day}</div>
-                  <div className="flex items-center gap-2 flex-1">
+                  <div className="flex items-center gap-2">
                     <Checkbox
                       id={`${day}-closed`}
                       checked={formData.businessHours[day]?.closed}
                       onCheckedChange={(checked) => updateHours(day, "closed", checked as boolean)}
                     />
-                    <Label htmlFor={`${day}-closed`} className="text-sm">Closed</Label>
+                    <Label htmlFor={`${day}-closed`} className="text-sm cursor-pointer">Closed</Label>
                   </div>
-                  {!formData.businessHours[day]?.closed && (
+                  {formData.businessHours[day]?.closed ? (
+                    <span className="text-gray-500 italic flex-1">Closed all day</span>
+                  ) : (
                     <>
                       <Input
                         type="time"
@@ -381,7 +383,7 @@ export default function BusinessSetupPage() {
                         onChange={(e) => updateHours(day, "open", e.target.value)}
                         className="w-24"
                       />
-                      <span>to</span>
+                      <span className="text-gray-500">to</span>
                       <Input
                         type="time"
                         value={formData.businessHours[day]?.close}
