@@ -14,7 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu, Moon, Sun } from "lucide-react";
+import { Menu, Moon, Sun, Phone } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { useTheme } from "next-themes";
 
@@ -54,8 +54,9 @@ export function Navbar() {
   return (
     <header className="sticky top-0 z-50 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4 flex h-16 items-center justify-between">
-        <Link href={homeLink} className="text-xl font-bold px-2">
-          {APP_NAME}
+        <Link href={homeLink} className="flex items-center gap-2 text-xl font-bold px-2">
+          <Phone className="w-6 h-6 text-primary" />
+          <span>{APP_NAME}</span>
         </Link>
 
         {/* Desktop nav */}
