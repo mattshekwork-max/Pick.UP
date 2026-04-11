@@ -14,18 +14,22 @@ import {
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
 import { Sheet, SheetContent, SheetTrigger } from "./ui/sheet";
-import { Menu } from "lucide-react";
+import { Menu, Moon, Sun } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
+import { useTheme } from "next-themes";
 
 const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "My App";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const { theme, setTheme } = useTheme();
   const router = useRouter();
   const supabase = createClient();
 
   useEffect(() => {
+    setMounted(true);
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user);
     });
@@ -63,6 +67,23 @@ export function Navbar() {
             >
               Pricing
             </Link>
+          )}
+
+          {/* Theme Toggle */}
+          {mounted && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              className="h-9 w-9"
+            >
+              {theme === "dark" ? (
+                <Sun className="h-4 w-4" />
+              ) : (
+                <Moon className="h-4 w-4" />
+              )}
+              <span className="sr-only">Toggle theme</span>
+            </Button>
           )}
 
           {user ? (
@@ -116,6 +137,26 @@ export function Navbar() {
           </SheetTrigger>
           <SheetContent side="right" className="w-72">
             <nav className="flex flex-col gap-4 mt-8">
+              {/* Theme Toggle (Mobile) */}
+              {mounted && (
+                <div className="flex items-center justify-between pb-4 border-b">
+                  <span className="text-sm text-muted-foreground">Theme</span>
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                    className="h-9 w-9"
+                  >
+                    {theme === "dark" ? (
+                      <Sun className="h-4 w-4" />
+                    ) : (
+                      <Moon className="h-4 w-4" />
+                    )}
+                    <span className="sr-only">Toggle theme</span>
+                  </Button>
+                </div>
+              )}
+              
               {user ? (
                 <>
                   <p className="text-sm text-muted-foreground truncate px-2">
