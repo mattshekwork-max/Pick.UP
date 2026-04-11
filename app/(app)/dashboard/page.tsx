@@ -4,6 +4,7 @@ import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Phone, Calendar, CheckCircle2, AlertCircle, ArrowRight } from "lucide-react";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 export const dynamic = "force-dynamic";
 
@@ -73,12 +74,15 @@ export default async function Dashboard() {
                 Your AI receptionist is ready
               </p>
             </div>
-            <Link href="/dashboard/setup">
-              <Button size="sm" className="bg-primary/10 hover:bg-primary/20 text-primary">
-                Configure AI
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
+            <div className="flex items-center gap-3">
+              <ThemeToggle />
+              <Link href="/dashboard/setup">
+                <Button size="sm" className="bg-primary/10 hover:bg-primary/20 text-primary">
+                  Configure AI
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </header>
