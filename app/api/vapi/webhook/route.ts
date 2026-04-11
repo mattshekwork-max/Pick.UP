@@ -150,12 +150,15 @@ async function handleFunctionCall(message: any, supabase: any) {
   }
 
   switch (functionCall.name) {
-    case "book_appointment":
-      return await handleBookAppointment(functionCall, business, supabase);
-    case "transfer_call":
-      return await handleTransferCall(functionCall, business);
-    case "check_availability":
-      return await handleCheckAvailability(functionCall, business);
+      case "book_appointment":
+      case "bookAppointment":  // Vapi tool name
+        return await handleBookAppointment(functionCall, business, supabase);
+      case "transfer_call":
+      case "transfer_call_tool":  // Vapi tool name
+        return await handleTransferCall(functionCall, business);
+      case "check_availability":
+      case "CheckAvailability":  // Vapi tool name
+        return await handleCheckAvailability(functionCall, business);
     default:
       return NextResponse.json({
         results: {
