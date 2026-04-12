@@ -61,17 +61,30 @@ async function handleCallEnded(message: any, supabase: any) {
   const { call } = message;
   const businessPhone = call.customer?.number;
 
+  console.log("📞 Call ended - Business phone:", businessPhone);
+  console.log("📞 Full call object:", JSON.stringify(call, null, 2));
+
   // Find business by phone number
-  const { data: business } = await supabase
+  const { data: business, error: businessError } = await supabase
     .from("businesses")
     .select("*")
     .eq("ringley_phone_number", businessPhone)
     .single();
 
-  if (!business) {
-    console.log("No business found for phone:", businessPhone);
+  if (businessError) {
+    console.error("❌ Error finding business:", businessError);
     return;
   }
+
+  if (!business) {
+    console.log("⚠️ No business found for phone:", businessPhone);
+    console.log("📋 Available businesses:");
+    const { data: allBusinesses } = await supabase.from("businesses").select("id, business_name, ringley_phone_number");
+    console.log(JSON.stringify(allBusinesses, null, 2));
+    return;
+  }
+
+  console.log("✅ Business found:", business.business_name);
 
   // Save call record
   const { data: callRecord, error: callError } = await supabase
@@ -91,11 +104,11 @@ async function handleCallEnded(message: any, supabase: any) {
     .single();
 
   if (callError) {
-    console.error("Failed to save call:", callError);
+    console.error("❌ Failed to save call:", callError);
     return;
   }
 
-  console.log("Call saved:", callRecord.id);
+  console.log("✅ Call saved:", callRecord.id);
 
   // Send SMS summary if transfer phone is configured
   if (business.transfer_phone_number) {
