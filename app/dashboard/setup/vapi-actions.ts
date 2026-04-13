@@ -92,10 +92,8 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
           functions: buildFunctions(business),
         },
         voice: {
-          provider: "11labs",
-          voiceId: "rachel",
-          stability: 0.5,
-          similarityBoost: 0.75,
+          provider: "vapi",
+          voiceId: "vapi-default-female",
         },
         firstMessage: business.greeting_message || "Hello! Thanks for calling. How can I help you today?",
         voicemailMessage: `You've reached ${business.business_name}. Please leave a message and we'll get back to you.`,
