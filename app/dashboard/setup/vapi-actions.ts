@@ -48,6 +48,7 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        provider: "vapi",
         areaCode,
         name: `Pick.UP Number ${areaCode}`,
       }),
