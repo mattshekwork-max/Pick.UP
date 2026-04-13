@@ -25,6 +25,20 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
     return { success: false, error: "Not authenticated" };
   }
 
+  // Check if user already has a provisioned phone number
+  const { data: existingBusiness } = await supabase
+    .from("businesses")
+    .select("ringley_phone_number, vapi_phone_number_id")
+    .eq("user_id", user.id)
+    .single();
+
+  if (existingBusiness?.ringley_phone_number) {
+    return { 
+      success: false, 
+      error: "You already have a Pick.UP number. Contact support@pickuphone.com if you need additional numbers." 
+    };
+  }
+
   try {
     // Step 1: Provision phone number from Vapi
     const phoneRes = await fetch("https://api.vapi.ai/phone-number", {

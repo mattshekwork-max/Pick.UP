@@ -65,13 +65,16 @@ export default async function Dashboard() {
       <header className="bg-card border-b">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
           <div className="flex items-center justify-between">
-            <div>
-              <h1 className="text-2xl font-bold text-foreground">
-                Welcome back{userData?.first_name ? `, ${userData.first_name}` : ''}!
-              </h1>
-              <p className="text-muted-foreground mt-1">
-                Your AI receptionist is ready
-              </p>
+            <div className="flex items-center gap-3">
+              <img src="/logo.png" alt="Pick.UP" className="w-8 h-8 object-contain" />
+              <div>
+                <h1 className="text-2xl font-bold text-foreground">
+                  Welcome back{userData?.first_name ? `, ${userData.first_name}` : ''}!
+                </h1>
+                <p className="text-muted-foreground mt-1">
+                  Your AI receptionist is ready
+                </p>
+              </div>
             </div>
             <div className="flex items-center gap-3">
               <Link href="/dashboard/setup">

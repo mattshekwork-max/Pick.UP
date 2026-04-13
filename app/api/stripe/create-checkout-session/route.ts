@@ -57,11 +57,12 @@ export async function POST(req: NextRequest) {
         .eq('id', userId);
     }
 
-    // Create checkout session
+    // Create checkout session with Apple Pay & Google Pay support + 14-day free trial
     const checkoutSession = await stripe.checkout.sessions.create({
       customer: customerId,
       mode: "subscription",
-      payment_method_types: ["card"],
+      payment_method_types: ["card", "alipay", "afterpay_clearpay"],
+      allow_promotion_codes: true,
       line_items: [
         {
           price: process.env.STRIPE_PRICE_ID,
@@ -74,6 +75,12 @@ export async function POST(req: NextRequest) {
         userId,
       },
       client_reference_id: userId,
+      // 14-day free trial
+      subscription_data: {
+        trial_period_days: 14,
+      },
+      // Enable Apple Pay and Google Pay automatically
+      // Stripe Checkout supports these by default when using card payment method
     });
 
     return NextResponse.json({ url: checkoutSession.url });

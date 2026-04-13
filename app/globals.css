@@ -47,58 +47,60 @@
 
 :root {
   --radius: 0.5rem;
-  --background: oklch(0.13 0.02 260);
-  --foreground: oklch(0.95 0.01 260);
-  --card: oklch(0.18 0.02 260);
-  --card-foreground: oklch(0.95 0.01 260);
-  --popover: oklch(0.18 0.02 260);
-  --popover-foreground: oklch(0.95 0.01 260);
-  --primary: oklch(0.75 0.12 200);
-  --primary-foreground: oklch(0.13 0.02 260);
-  --secondary: oklch(0.22 0.02 260);
-  --secondary-foreground: oklch(0.95 0.01 260);
-  --muted: oklch(0.22 0.02 260);
-  --muted-foreground: oklch(0.7 0.02 260);
-  --accent: oklch(0.7 0.15 160);
-  --accent-foreground: oklch(0.13 0.02 260);
-  --destructive: oklch(0.65 0.2 25);
-  --border: oklch(0.28 0.02 260);
-  --input: oklch(0.22 0.02 260);
-  --ring: oklch(0.75 0.12 200);
-  --chart-1: oklch(0.75 0.12 200);
-  --chart-2: oklch(0.7 0.15 160);
-  --chart-3: oklch(0.8 0.1 280);
+  /* Light Mode (default) */
+  --background: oklch(0.98 0.005 260);
+  --foreground: oklch(0.2 0.02 260);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.2 0.02 260);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.2 0.02 260);
+  --primary: oklch(0.65 0.18 170);
+  --primary-foreground: oklch(0.98 0.005 260);
+  --secondary: oklch(0.93 0.01 260);
+  --secondary-foreground: oklch(0.2 0.02 260);
+  --muted: oklch(0.93 0.01 260);
+  --muted-foreground: oklch(0.5 0.02 260);
+  --accent: oklch(0.65 0.18 170);
+  --accent-foreground: oklch(0.98 0.005 260);
+  --destructive: oklch(0.6 0.2 25);
+  --border: oklch(0.88 0.01 260);
+  --input: oklch(0.93 0.01 260);
+  --ring: oklch(0.65 0.18 170);
+  --chart-1: oklch(0.65 0.18 170);
+  --chart-2: oklch(0.6 0.15 160);
+  --chart-3: oklch(0.7 0.12 280);
   --chart-4: oklch(0.75 0.13 45);
   --chart-5: oklch(0.7 0.14 30);
-  --sidebar: oklch(0.15 0.02 260);
-  --sidebar-foreground: oklch(0.95 0.01 260);
-  --sidebar-primary: oklch(0.75 0.12 200);
-  --sidebar-primary-foreground: oklch(0.13 0.02 260);
-  --sidebar-accent: oklch(0.22 0.02 260);
-  --sidebar-accent-foreground: oklch(0.95 0.01 260);
-  --sidebar-border: oklch(0.28 0.02 260);
-  --sidebar-ring: oklch(0.75 0.12 200);
+  --sidebar: oklch(0.98 0.005 260);
+  --sidebar-foreground: oklch(0.2 0.02 260);
+  --sidebar-primary: oklch(0.65 0.18 170);
+  --sidebar-primary-foreground: oklch(0.98 0.005 260);
+  --sidebar-accent: oklch(0.93 0.01 260);
+  --sidebar-accent-foreground: oklch(0.2 0.02 260);
+  --sidebar-border: oklch(0.88 0.01 260);
+  --sidebar-ring: oklch(0.65 0.18 170);
 }
 
 .dark {
+  /* Dark Mode */
   --background: oklch(0.13 0.02 260);
   --foreground: oklch(0.95 0.01 260);
   --card: oklch(0.18 0.02 260);
   --card-foreground: oklch(0.95 0.01 260);
   --popover: oklch(0.18 0.02 260);
   --popover-foreground: oklch(0.95 0.01 260);
-  --primary: oklch(0.75 0.12 200);
-  --primary-foreground: oklch(0.13 0.02 260);
+  --primary: oklch(0.65 0.18 170);
+  --primary-foreground: oklch(0.98 0.005 260);
   --secondary: oklch(0.22 0.02 260);
   --secondary-foreground: oklch(0.95 0.01 260);
   --muted: oklch(0.22 0.02 260);
   --muted-foreground: oklch(0.7 0.02 260);
-  --accent: oklch(0.7 0.15 160);
-  --accent-foreground: oklch(0.13 0.02 260);
+  --accent: oklch(0.65 0.18 170);
+  --accent-foreground: oklch(0.98 0.005 260);
   --destructive: oklch(0.65 0.2 25);
   --border: oklch(0.28 0.02 260);
   --input: oklch(0.22 0.02 260);
-  --ring: oklch(0.75 0.12 200);
+  --ring: oklch(0.65 0.18 170);
   --chart-1: oklch(0.75 0.12 200);
   --chart-2: oklch(0.7 0.15 160);
   --chart-3: oklch(0.8 0.1 280);
@@ -106,12 +108,12 @@
   --chart-5: oklch(0.7 0.14 30);
   --sidebar: oklch(0.15 0.02 260);
   --sidebar-foreground: oklch(0.95 0.01 260);
-  --sidebar-primary: oklch(0.75 0.12 200);
-  --sidebar-primary-foreground: oklch(0.13 0.02 260);
+  --sidebar-primary: oklch(0.65 0.18 170);
+  --sidebar-primary-foreground: oklch(0.98 0.005 260);
   --sidebar-accent: oklch(0.22 0.02 260);
   --sidebar-accent-foreground: oklch(0.95 0.01 260);
   --sidebar-border: oklch(0.28 0.02 260);
-  --sidebar-ring: oklch(0.75 0.12 200);
+  --sidebar-ring: oklch(0.65 0.18 170);
 }
 
 @layer base {

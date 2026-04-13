@@ -87,11 +87,18 @@ export default function UpgradePage() {
           <p className="text-muted-foreground mt-2">
             Unlock all premium features
           </p>
+          <div className="mt-4 inline-flex items-center gap-2 bg-[#0D9488]/10 text-[#0D9488] px-4 py-2 rounded-full text-sm font-medium">
+            <Check className="w-4 h-4" />
+            Start with 14 days free
+          </div>
         </CardHeader>
         <CardContent className="space-y-6">
           <div className="text-center">
-            <div className="text-5xl font-bold">$5</div>
+            <div className="text-5xl font-bold">$49.99</div>
             <div className="text-muted-foreground mt-1">per month</div>
+            <div className="text-sm text-[#0D9488] mt-2 font-medium">
+              First 14 days free
+            </div>
           </div>
 
           <div className="space-y-3">
@@ -105,8 +112,8 @@ export default function UpgradePage() {
 
           <div className="bg-muted/50 rounded-lg p-4 text-sm text-muted-foreground">
             <p>
-              <strong>Cancel anytime.</strong> No long-term commitments. Your
-              subscription renews monthly.
+              <strong>14-day free trial.</strong> No charge today. Cancel anytime during trial.
+              Then $49.99/month, cancel anytime.
             </p>
           </div>
         </CardContent>

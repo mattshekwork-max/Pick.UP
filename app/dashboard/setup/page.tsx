@@ -192,6 +192,9 @@ export default function BusinessSetupPage() {
                   <p className="text-sm text-gray-600 mt-2">
                     This is your Pick.UP number. Give this to customers or forward your existing number to it.
                   </p>
+                  <p className="text-xs text-gray-500 mt-3">
+                    Need more numbers? Contact <a href="mailto:support@pickuphone.com" className="text-[#0D9488] hover:underline">support@pickuphone.com</a>
+                  </p>
                 </div>
               ) : (
                 <>
@@ -224,6 +227,9 @@ export default function BusinessSetupPage() {
                     </div>
                     <p className="text-sm text-gray-600">
                       Enter your preferred area code (e.g., 555 for San Francisco area)
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      Each business gets one auto-provisioned number. Need more? Contact support.
                     </p>
                   </div>
                   

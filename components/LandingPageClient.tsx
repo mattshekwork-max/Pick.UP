@@ -88,10 +88,8 @@ export function LandingPageClient() {
     <main className="flex flex-col min-h-screen bg-[#faf9f7] overflow-hidden font-sans">
       {/* Navigation */}
       <nav className="w-full px-6 py-4 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#0D9488] flex items-center justify-center">
-            <Phone className="w-4 h-4 text-white" />
-          </div>
+        <div className="flex items-center gap-3">
+          <img src="/logo.png" alt="Pick.UP" className="w-8 h-8 object-contain" />
           <span className="font-heading font-bold text-xl text-gray-900">Pick.UP</span>
         </div>
         <div className="flex items-center gap-4">

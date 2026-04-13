@@ -83,10 +83,8 @@ export default function SignupPage() {
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#faf9f7]">
       <Card className="w-full max-w-md border-gray-200 shadow-lg rounded-xl">
         <CardHeader className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-2">
-            <div className="w-10 h-10 rounded-xl bg-[#0D9488] flex items-center justify-center">
-              <Phone className="w-5 h-5 text-white" />
-            </div>
+          <div className="flex items-center justify-center gap-3">
+            <img src="/logo.png" alt="Pick.UP" className="w-10 h-10 object-contain" />
             <CardTitle className="text-2xl font-heading font-bold text-gray-900">{APP_NAME}</CardTitle>
           </div>
           <CardDescription className="text-gray-600">Create your account</CardDescription>

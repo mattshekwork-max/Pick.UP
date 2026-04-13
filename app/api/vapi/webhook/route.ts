@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { checkAvailability, createCalendarEvent, getAvailableSlots } from "@/lib/calendar";
 import { sendCallSummarySMS, logSMS } from "@/lib/sms";
 import { createHmac } from "crypto";
+import { addCorsHeaders, handlePreflight } from "@/lib/middleware/security";
 
 const WEBHOOK_SECRET = process.env.VAPI_WEBHOOK_SECRET || "";
 
@@ -10,18 +11,32 @@ function verifyVapiSignature(payload: string, signature: string): boolean {
   // Skip verification if no secret is configured (safe for Vapi's platform-level auth)
   if (!WEBHOOK_SECRET || !signature) {
     console.log("Webhook signature verification skipped (no secret configured)");
+    console.log("WEBHOOK_SECRET configured:", !!WEBHOOK_SECRET);
+    console.log("Signature present:", !!signature);
     return true;
   }
   const expected = createHmac("sha256", WEBHOOK_SECRET).update(payload).digest("hex");
-  return signature === expected;
+  const valid = signature === expected;
+  console.log("Webhook signature verification:", valid ? "✅ VALID" : "❌ INVALID");
+  if (!valid) {
+    console.log("Expected:", expected);
+    console.log("Received:", signature);
+  }
+  return valid;
 }
 
 export async function POST(request: NextRequest) {
   const signature = request.headers.get("x-vapi-signature") || "";
   const payload = await request.text();
 
-  // Verify webhook signature
+  console.log("📥 Vapi webhook received");
+  console.log("   Event type:", JSON.parse(payload)?.message?.type || "unknown");
+  console.log("   Signature present:", !!signature);
+  console.log("   Payload preview:", payload.substring(0, 200) + "...");
+
+  // Verify webhook signature (CRITICAL SECURITY)
   if (!verifyVapiSignature(payload, signature)) {
+    console.log("❌ Rejecting webhook - invalid signature");
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
@@ -43,11 +58,13 @@ export async function POST(request: NextRequest) {
     }
 
     // Always return 200 to Vapi
-    return NextResponse.json({ success: true });
+    const response = NextResponse.json({ success: true });
+    return addCorsHeaders(request, response);
   } catch (error) {
     console.error("Vapi webhook error:", error);
     // Still return 200 so Vapi doesn't retry
-    return NextResponse.json({ success: true, error: "Logged for review" });
+    const response = NextResponse.json({ success: true, error: "Logged for review" });
+    return addCorsHeaders(request, response);
   }
 }
 
@@ -111,7 +128,13 @@ async function handleCallEnded(message: any, supabase: any) {
   console.log("✅ Call saved:", callRecord.id);
 
   // Send SMS summary if transfer phone is configured
+  console.log("📱 Checking SMS configuration...");
+  console.log("   Business transfer_phone_number:", business.transfer_phone_number || "NOT SET");
+  console.log("   TWILIO_ACCOUNT_SID configured:", !!process.env.TWILIO_ACCOUNT_SID);
+  console.log("   TWILIO_PHONE_NUMBER configured:", !!process.env.TWILIO_PHONE_NUMBER);
+  
   if (business.transfer_phone_number) {
+    console.log("📤 Sending SMS to:", business.transfer_phone_number);
     const smsResult = await sendCallSummarySMS(
       business.transfer_phone_number,
       business.business_name,
@@ -124,6 +147,8 @@ async function handleCallEnded(message: any, supabase: any) {
       }
     );
 
+    console.log("📊 SMS result:", smsResult);
+    
     // Log SMS to database
     await logSMS(
       supabase,
@@ -136,10 +161,12 @@ async function handleCallEnded(message: any, supabase: any) {
     );
 
     if (smsResult.success) {
-      console.log("SMS sent:", smsResult.messageId);
+      console.log("✅ SMS sent:", smsResult.messageId);
     } else {
-      console.error("SMS failed:", smsResult.error);
+      console.log("❌ SMS failed:", smsResult.error);
     }
+  } else {
+    console.log("⚠️  SMS not sent - business.transfer_phone_number is not set");
   }
 }
 
@@ -360,4 +387,8 @@ function formatBusinessHours(hours: any): string {
     .filter(([_, h]: [string, any]) => !h.closed)
     .map(([day, h]: [string, any]) => `${day}: ${h.open}-${h.close}`);
   return days.join(", ") || "Please call for hours";
+}
+
+export async function OPTIONS(request: NextRequest) {
+  return handlePreflight(request);
 }
