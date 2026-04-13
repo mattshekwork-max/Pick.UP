@@ -75,8 +75,28 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       return { success: false, error: "Business profile not found" };
     }
 
-    // Step 3: Use existing Multilingual Scheduler assistant
+    // Step 3: Update Multilingual Scheduler assistant with business info
     const assistantId = "ede4fd61-4141-44a7-8e35-e4e47ceb8953";
+    
+    // Update assistant with business-specific system prompt
+    const updateAssistantRes = await fetch(`https://api.vapi.ai/assistant/${assistantId}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: `Bearer ${VAPI_API_KEY}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        model: {
+          systemPrompt: buildSystemPrompt(business),
+        },
+      }),
+    });
+
+    if (!updateAssistantRes.ok) {
+      const errorText = await updateAssistantRes.text();
+      console.error("Vapi assistant update error:", errorText);
+      // Continue anyway - assistant will still work with default prompt
+    }
 
     // Step 4: Link phone number to assistant
     const linkRes = await fetch(`https://api.vapi.ai/phone-number/${phoneNumberId}`, {
