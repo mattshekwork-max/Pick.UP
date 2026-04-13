@@ -49,7 +49,7 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       },
       body: JSON.stringify({
         provider: "vapi",
-        areaCode,
+        area_code: areaCode,
         name: `Pick.UP Number ${areaCode}`,
       }),
     });
