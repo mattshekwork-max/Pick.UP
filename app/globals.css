@@ -126,6 +126,9 @@
   .font-quicksand {
     font-family: var(--font-quicksand);
   }
+  img {
+    background: transparent !important;
+  }
 }
 
 @layer base {
