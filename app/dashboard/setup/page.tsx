@@ -120,8 +120,8 @@ export default function BusinessSetupPage() {
     
     if (result.success) {
       setLastSaved(new Date());
-      router.push("/dashboard");
-      router.refresh();
+      // Auto-redirect to phone provisioning page
+      router.push("/dashboard/setup/phone");
     } else {
       setError(result.error || "Failed to save profile");
     }
