@@ -75,32 +75,40 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       return { success: false, error: "Business profile not found" };
     }
 
-    // Step 3: Update Multilingual Scheduler assistant with business info
-    const assistantId = "ede4fd61-4141-44a7-8e35-e4e47ceb8953";
-    
-    // Update assistant with business-specific system prompt and fix voice
-    const updateAssistantRes = await fetch(`https://api.vapi.ai/assistant/${assistantId}`, {
-      method: "PATCH",
+    // Step 3: Create new Pick.UP assistant with business info
+    const assistantRes = await fetch("https://api.vapi.ai/assistant", {
+      method: "POST",
       headers: {
         Authorization: `Bearer ${VAPI_API_KEY}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        name: `${business.business_name} Receptionist`,
         model: {
+          provider: "openai",
+          model: "gpt-4o",
+          temperature: 0.7,
           systemPrompt: buildSystemPrompt(business),
+          functions: buildFunctions(business),
         },
         voice: {
           provider: "vapi",
           voiceId: "vapi-default-female",
         },
+        firstMessage: business.greeting_message || `Thank you for calling ${business.business_name}! How can I help you today?`,
+        voicemailMessage: `You've reached ${business.business_name}. Please leave a message and we'll get back to you.`,
+        recordingEnabled: true,
       }),
     });
 
-    if (!updateAssistantRes.ok) {
-      const errorText = await updateAssistantRes.text();
-      console.error("Vapi assistant update error:", errorText);
-      // Continue anyway - assistant will still work with default prompt
+    if (!assistantRes.ok) {
+      const errorText = await assistantRes.text();
+      console.error("Vapi assistant creation error:", errorText);
+      return { success: false, error: `Failed to create assistant: ${errorText}` };
     }
+
+    const assistantData = await assistantRes.json();
+    const assistantId = assistantData.id;
 
     // Step 4: Link phone number to assistant
     const linkRes = await fetch(`https://api.vapi.ai/phone-number/${phoneNumberId}`, {
