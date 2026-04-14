@@ -138,6 +138,11 @@ export default function PhoneProvisionPage() {
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   This is your Pick.UP number. Give this to customers or forward your existing number to it.
                 </p>
+                <div className="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+                  <p className="text-xs text-blue-800 dark:text-blue-200">
+                    <strong>⏱️ Note:</strong> It takes about 1 minute for your number to fully register and become active. Please wait before testing.
+                  </p>
+                </div>
               </div>
               
               <div className="space-y-3">
