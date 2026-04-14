@@ -146,6 +146,29 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     return { success: false, error: "Not authenticated" };
   }
   
+  // Ensure user exists in users table (fix for missing trigger)
+  const { data: existingUser } = await supabase
+    .from('users')
+    .select('id')
+    .eq('id', user.id)
+    .single();
+  
+  if (!existingUser) {
+    // Create user record if missing
+    const { error: userError } = await supabase
+      .from('users')
+      .insert({
+        id: user.id,
+        email: user.email,
+        created_at: new Date().toISOString(),
+      });
+    
+    if (userError) {
+      console.error('Failed to create user record:', userError);
+      return { success: false, error: `Failed to create user profile: ${userError.message}` };
+    }
+  }
+  
   // Clean up services and FAQs (remove empty ones)
   const services = formData.services.filter(s => s.trim() !== "");
   const faqs = formData.faqs.filter(f => f.question.trim() !== "" && f.answer.trim() !== "");
