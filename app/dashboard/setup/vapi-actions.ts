@@ -141,7 +141,10 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
 
     if (updateError) {
       console.error("Database update error:", updateError);
-      return { success: false, error: "Failed to save phone number" };
+      console.error("User ID:", user.id);
+      console.error("Phone number:", phoneNumber);
+      console.error("Assistant ID:", assistantId);
+      return { success: false, error: `Failed to save phone number: ${updateError.message}` };
     }
 
     revalidatePath("/dashboard");
