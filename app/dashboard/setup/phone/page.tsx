@@ -239,6 +239,9 @@ export default function PhoneProvisionPage() {
                       <strong>Tip:</strong> Some landline providers allow you to change the ring count before forwarding kicks in. Try dialing <code className="bg-purple-100 dark:bg-purple-900/50 px-1.5 py-0.5 rounded">*47</code> followed by a code (e.g., dial 30 for 5 rings). Check with your provider for exact codes.
                     </p>
                   </div>
+
+                  <div className="border-t border-purple-200 dark:border-purple-700 pt-4">
+                    <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-2">Alternative: Carrier App/Website</h4>
                     <p className="text-sm text-purple-800 dark:text-purple-200 mb-2">
                       Most carriers also let you set up call forwarding through their app or website:
                     </p>
