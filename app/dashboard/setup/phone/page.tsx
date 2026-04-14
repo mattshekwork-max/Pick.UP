@@ -132,6 +132,33 @@ export default function PhoneProvisionPage() {
                 </ul>
               </div>
 
+              <div className="p-4 bg-purple-50 dark:bg-purple-900/20 border border-purple-200 dark:border-purple-800 rounded-xl">
+                <h3 className="font-semibold text-purple-900 dark:text-purple-100 mb-3 flex items-center gap-2">
+                  <Phone className="w-4 h-4" />
+                  Want to Forward Your Existing Number?
+                </h3>
+                <p className="text-sm text-purple-800 dark:text-purple-200 mb-3">
+                  Forward calls from your current business line to your new Pick.UP number:
+                </p>
+                <ol className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">1.</span>
+                    <span>Call your current phone number from another phone</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">2.</span>
+                    <span>Follow your carrier's instructions to set up call forwarding</span>
+                  </li>
+                  <li className="flex items-start gap-2">
+                    <span className="font-bold">3.</span>
+                    <span>Enter your Pick.UP number: <strong className="text-[#0D9488]">{provisionedPhone}</strong></span>
+                  </li>
+                </ol>
+                <p className="text-xs text-purple-700 dark:text-purple-300 mt-3 italic">
+                  Or contact your phone carrier for assistance with call forwarding setup.
+                </p>
+              </div>
+
               <div className="flex gap-3 pt-4">
                 <Link href="/dashboard/setup" className="flex-1">
                   <Button className="w-full bg-[#0D9488] hover:bg-[#0d857c] text-white">
