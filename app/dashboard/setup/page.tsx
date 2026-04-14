@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -197,86 +198,6 @@ export default function BusinessSetupPage() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          {/* Pick.UP Phone Number */}
-          <Card className="border-[#0D9488]/20 bg-[#0D9488]/5">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2 text-[#0D9488]">
-                <Phone className="w-5 h-5" />
-                Your Pick.UP Phone Number
-              </CardTitle>
-              <CardDescription>
-                Get a dedicated phone number for your AI receptionist
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {provisionedPhone ? (
-                <div className="p-4 bg-white rounded-xl border border-[#0D9488]/20">
-                  <div className="flex items-center gap-3 mb-2">
-                    <CheckCircle className="w-5 h-5 text-[#0D9488]" />
-                    <span className="font-medium text-gray-900">Phone number provisioned!</span>
-                  </div>
-                  <p className="text-2xl font-bold text-[#0D9488]">{provisionedPhone}</p>
-                  <p className="text-sm text-gray-600 mt-2">
-                    This is your Pick.UP number. Give this to customers or forward your existing number to it.
-                  </p>
-                  <p className="text-xs text-gray-500 mt-3">
-                    Need more numbers? Contact <a href="mailto:support@pickuphone.com" className="text-[#0D9488] hover:underline">support@pickuphone.com</a>
-                  </p>
-                </div>
-              ) : (
-                <>
-                  <div className="space-y-2">
-                    <Label htmlFor="areaCode">Area Code</Label>
-                    <div className="flex gap-2">
-                      <Input
-                        id="areaCode"
-                        value={areaCode}
-                        onChange={(e) => setAreaCode(e.target.value.replace(/\D/g, "").slice(0, 3))}
-                        placeholder="e.g., 555"
-                        maxLength={3}
-                        className="w-32"
-                      />
-                      <Button
-                        type="button"
-                        onClick={handleProvisionPhone}
-                        disabled={provisioning || areaCode.length !== 3}
-                        className="bg-[#0D9488] hover:bg-[#0d857c] text-white"
-                      >
-                        {provisioning ? (
-                          <>
-                            <Loader2 className="w-4 h-4 mr-2 animate-spin" />
-                            Provisioning...
-                          </>
-                        ) : (
-                          "Get Number"
-                        )}
-                      </Button>
-                    </div>
-                    <p className="text-sm text-gray-600">
-                      Enter your preferred area code (e.g., 555 for San Francisco area)
-                    </p>
-                    <p className="text-xs text-gray-500">
-                      Each business gets one auto-provisioned number. Need more? Contact support.
-                    </p>
-                  </div>
-                  
-                  <div className="space-y-2">
-                    <Label htmlFor="phoneNumber">Or use your existing number</Label>
-                    <Input
-                      id="phoneNumber"
-                      value={formData.phoneNumber}
-                      onChange={(e) => setFormData({ ...formData, phoneNumber: e.target.value })}
-                      placeholder="(555) 123-4567"
-                    />
-                    <p className="text-sm text-gray-600">
-                      Forward your existing business line to your Pick.UP number
-                    </p>
-                  </div>
-                </>
-              )}
-            </CardContent>
-          </Card>
-
           {/* Business Info */}
           <Card>
             <CardHeader>
@@ -485,10 +406,19 @@ export default function BusinessSetupPage() {
             {loading ? "Saving..." : (
               <>
                 <Save className="w-5 h-5 mr-2" />
-                Save & Continue
+                Save Business Profile
               </>
             )}
           </Button>
+          
+          {lastSaved && (
+            <Link href="/dashboard/setup/phone" className="block mt-3">
+              <Button type="button" variant="outline" className="w-full h-12 text-lg border-[#0D9488] text-[#0D9488] hover:bg-[#0D9488]/10">
+                <Phone className="w-5 h-5 mr-2" />
+                Continue to Get Phone Number
+              </Button>
+            </Link>
+          )}
         </form>
       </div>
     </div>
