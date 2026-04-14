@@ -93,7 +93,7 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
         },
         voice: {
           provider: "vapi",
-          voiceId: "Layla",
+          voiceId: "Zac",
         },
         firstMessage: business.greeting_message || `Thank you for calling ${business.business_name}! How can I help you today?`,
         voicemailMessage: `You've reached ${business.business_name}. Please leave a message and we'll get back to you.`,
