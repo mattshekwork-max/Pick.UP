@@ -128,23 +128,25 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       // Continue anyway - we can link manually later
     }
 
-    // Step 5: Save to database
-    const { error: updateError } = await supabase
+    // Step 5: Save to database (UPSERT - insert or update)
+    const { error: upsertError } = await supabase
       .from("businesses")
-      .update({
+      .upsert({
+        user_id: user.id,
         ringley_phone_number: phoneNumber,
         vapi_assistant_id: assistantId,
         vapi_phone_number_id: phoneNumberId,
         updated_at: new Date().toISOString(),
-      })
-      .eq("user_id", user.id);
+      }, {
+        onConflict: "user_id",
+      });
 
-    if (updateError) {
-      console.error("Database update error:", updateError);
+    if (upsertError) {
+      console.error("Database upsert error:", upsertError);
       console.error("User ID:", user.id);
       console.error("Phone number:", phoneNumber);
       console.error("Assistant ID:", assistantId);
-      return { success: false, error: `Failed to save phone number: ${updateError.message}` };
+      return { success: false, error: `Failed to save phone number: ${upsertError.message}` };
     }
 
     revalidatePath("/dashboard");
