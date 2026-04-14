@@ -78,7 +78,7 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
     // Step 3: Update Multilingual Scheduler assistant with business info
     const assistantId = "ede4fd61-4141-44a7-8e35-e4e47ceb8953";
     
-    // Update assistant with business-specific system prompt
+    // Update assistant with business-specific system prompt and fix voice
     const updateAssistantRes = await fetch(`https://api.vapi.ai/assistant/${assistantId}`, {
       method: "PATCH",
       headers: {
@@ -88,6 +88,10 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       body: JSON.stringify({
         model: {
           systemPrompt: buildSystemPrompt(business),
+        },
+        voice: {
+          provider: "vapi",
+          voiceId: "vapi-default-female",
         },
       }),
     });
