@@ -187,7 +187,28 @@ export default function PhoneProvisionPage() {
                   </div>
 
                   <div className="border-t border-purple-200 dark:border-purple-700 pt-4">
-                    <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-2">Alternative: Carrier App/Website</h4>
+                    <h4 className="font-bold text-purple-900 dark:text-purple-100 mb-2">📞 Landline Users</h4>
+                    <p className="text-sm text-purple-800 dark:text-purple-200 mb-2">
+                      If you have a landline, the process is similar but may vary by provider:
+                    </p>
+                    <ul className="space-y-2 text-sm text-purple-800 dark:text-purple-200">
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold">•</span>
+                        <span>Lift the receiver and dial <code className="bg-purple-100 dark:bg-purple-900/50 px-1.5 py-0.5 rounded">*72</code></span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold">•</span>
+                        <span>Wait for tone, then enter your Pick.UP number</span>
+                      </li>
+                      <li className="flex items-start gap-2">
+                        <span className="font-bold">•</span>
+                        <span>Hang up after confirmation</span>
+                      </li>
+                    </ul>
+                    <p className="text-xs text-purple-700 dark:text-purple-300 mt-3 italic">
+                      <strong>Tip:</strong> Some landline providers allow you to change the ring count before forwarding kicks in. Try dialing <code className="bg-purple-100 dark:bg-purple-900/50 px-1.5 py-0.5 rounded">*47</code> followed by a code (e.g., dial 30 for 5 rings). Check with your provider for exact codes.
+                    </p>
+                  </div>
                     <p className="text-sm text-purple-800 dark:text-purple-200 mb-2">
                       Most carriers also let you set up call forwarding through their app or website:
                     </p>
