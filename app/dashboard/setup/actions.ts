@@ -150,6 +150,21 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
   const services = formData.services.filter(s => s.trim() !== "");
   const faqs = formData.faqs.filter(f => f.question.trim() !== "" && f.answer.trim() !== "");
   
+  // Format phone numbers for Twilio (E.164 format)
+  const formatPhoneNumber = (phone: string) => {
+    if (!phone) return null;
+    // Remove all non-digits
+    const digits = phone.replace(/\D/g, "");
+    // Add +1 for US numbers if not already present
+    if (digits.length === 10) {
+      return `+1${digits}`;
+    } else if (digits.length === 11 && digits.startsWith("1")) {
+      return `+${digits}`;
+    }
+    // Return as-is if already in E.164 format or international
+    return digits.startsWith("+") ? digits : `+1${digits}`;
+  };
+  
   // Check if business profile exists
   const { data: existingBusiness } = await supabase
     .from("businesses")
@@ -161,7 +176,7 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     user_id: user.id,
     business_name: formData.businessName,
     phone_number: formData.phoneNumber,
-    transfer_phone_number: formData.transferPhone || null,
+    transfer_phone_number: formData.transferPhone ? formatPhoneNumber(formData.transferPhone) : null,
     greeting_message: formData.greetingMessage,
     services: services,
     faqs: faqs,
