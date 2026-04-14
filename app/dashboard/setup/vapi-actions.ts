@@ -128,25 +128,33 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       // Continue anyway - we can link manually later
     }
 
-    // Step 5: Save to database (UPSERT - insert or update)
-    const { error: upsertError } = await supabase
+    // Step 5: Save to database (UPDATE if exists, INSERT if not)
+    const { error: updateError } = await supabase
       .from("businesses")
-      .upsert({
-        user_id: user.id,
+      .update({
         ringley_phone_number: phoneNumber,
         vapi_assistant_id: assistantId,
         vapi_phone_number_id: phoneNumberId,
         updated_at: new Date().toISOString(),
-      }, {
-        onConflict: "user_id",
-      });
+      })
+      .eq("user_id", user.id);
 
-    if (upsertError) {
-      console.error("Database upsert error:", upsertError);
-      console.error("User ID:", user.id);
-      console.error("Phone number:", phoneNumber);
-      console.error("Assistant ID:", assistantId);
-      return { success: false, error: `Failed to save phone number: ${upsertError.message}` };
+    // If UPDATE failed because no record exists, try INSERT
+    if (updateError) {
+      const { error: insertError } = await supabase
+        .from("businesses")
+        .insert({
+          user_id: user.id,
+          ringley_phone_number: phoneNumber,
+          vapi_assistant_id: assistantId,
+          vapi_phone_number_id: phoneNumberId,
+          updated_at: new Date().toISOString(),
+        });
+
+      if (insertError) {
+        console.error("Database insert error:", insertError);
+        return { success: false, error: `Failed to save phone number: ${insertError.message}` };
+      }
     }
 
     revalidatePath("/dashboard");
