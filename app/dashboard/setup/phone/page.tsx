@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Phone, CheckCircle, Loader2, ArrowLeft } from "lucide-react";
+import { Phone, CheckCircle, Loader2, ArrowLeft, Copy } from "lucide-react";
 import { provisionVapiPhoneNumber } from "../vapi-actions";
 import { getBusinessProfile } from "../actions";
 import Link from "next/link";
@@ -19,6 +19,15 @@ export default function PhoneProvisionPage() {
   const [provisioning, setProvisioning] = useState(false);
   const [provisionedPhone, setProvisionedPhone] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState<string>("");
+  const [copied, setCopied] = useState(false);
+
+  const copyToClipboard = async () => {
+    if (provisionedPhone) {
+      await navigator.clipboard.writeText(provisionedPhone);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2000);
+    }
+  };
 
   // Load existing business data
   useEffect(() => {
@@ -104,7 +113,28 @@ export default function PhoneProvisionPage() {
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="p-6 bg-white dark:bg-gray-800 rounded-xl border border-[#0D9488]/20">
-                <p className="text-3xl font-bold text-[#0D9488] mb-2">{provisionedPhone}</p>
+                <div className="flex items-center justify-between gap-4 mb-2">
+                  <p className="text-3xl font-bold text-[#0D9488]">{provisionedPhone}</p>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    size="sm"
+                    onClick={copyToClipboard}
+                    className="shrink-0"
+                  >
+                    {copied ? (
+                      <>
+                        <CheckCircle className="w-4 h-4 mr-2 text-green-600" />
+                        Copied!
+                      </>
+                    ) : (
+                      <>
+                        <Copy className="w-4 h-4 mr-2" />
+                        Copy
+                      </>
+                    )}
+                  </Button>
+                </div>
                 <p className="text-sm text-gray-600 dark:text-gray-400">
                   This is your Pick.UP number. Give this to customers or forward your existing number to it.
                 </p>
