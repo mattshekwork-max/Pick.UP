@@ -400,13 +400,15 @@ export default function BusinessSetupPage() {
                   <div className="w-28 font-medium">{day}</div>
                   <div className="flex items-center gap-2">
                     <Checkbox
-                      id={`${day}-open`}
-                      checked={!formData.businessHours[day]?.closed}
-                      onCheckedChange={(checked) => updateHours(day, "closed", !(checked as boolean))}
+                      id={`${day}-closed`}
+                      checked={formData.businessHours[day]?.closed}
+                      onCheckedChange={(checked) => updateHours(day, "closed", checked as boolean)}
                     />
-                    <Label htmlFor={`${day}-open`} className="text-sm cursor-pointer">Open</Label>
+                    <Label htmlFor={`${day}-closed`} className="text-sm cursor-pointer">Closed</Label>
                   </div>
-                  {!formData.businessHours[day]?.closed ? (
+                  {formData.businessHours[day]?.closed ? (
+                    <span className="text-gray-500 italic flex-1">Closed all day</span>
+                  ) : (
                     <>
                       <Input
                         type="time"
@@ -422,8 +424,6 @@ export default function BusinessSetupPage() {
                         className="w-24"
                       />
                     </>
-                  ) : (
-                    <span className="text-gray-500 italic flex-1">Closed all day</span>
                   )}
                 </div>
               ))}
