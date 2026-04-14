@@ -9,7 +9,7 @@ import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Save, Phone, Clock, MessageSquare, Calendar, Loader2, CheckCircle } from "lucide-react";
-import { saveBusinessProfile } from "./actions";
+import { saveBusinessProfile, getBusinessProfile } from "./actions";
 import { provisionVapiPhoneNumber } from "./vapi-actions";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as const;
@@ -39,6 +39,33 @@ export default function BusinessSetupPage() {
     googleCalendarId: "",
     timezone: "America/Los_Angeles",
   });
+
+  // Load existing business data on mount
+  useEffect(() => {
+    async function loadExistingData() {
+      const business = await getBusinessProfile();
+      if (business) {
+        setFormData({
+          businessName: business.business_name || "",
+          phoneNumber: business.phone_number || "",
+          transferPhone: business.transfer_phone_number || "",
+          greetingMessage: business.greeting_message || "Hello! Thanks for calling. How can I help you today?",
+          services: business.services?.length > 0 ? business.services : ["", "", ""],
+          faqs: business.faqs?.length > 0 ? business.faqs : [{ question: "", answer: "" }],
+          businessHours: business.business_hours || DAYS.reduce((acc, day) => ({ ...acc, [day]: { open: "09:00", close: "17:00", closed: false } }), {} as BusinessHours),
+          googleCalendarId: business.google_calendar_id || "",
+          timezone: business.timezone || "America/Los_Angeles",
+        });
+        
+        // If phone number exists, show it as provisioned
+        if (business.ringley_phone_number) {
+          setProvisionedPhone(business.ringley_phone_number);
+        }
+      }
+    }
+    
+    loadExistingData();
+  }, []);
 
   // Auto-save function with debouncing
   const autoSave = useCallback(async (data: typeof formData) => {
