@@ -29,8 +29,12 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("x-vapi-signature") || "";
   const payload = await request.text();
 
+  // Parse payload first (before using it)
+  const parsedData = JSON.parse(payload);
+  const eventType = parsedData.message?.type || parsedData.type || "unknown";
+  
   console.log("📥 Vapi webhook received");
-  console.log("   Event type:", JSON.parse(payload)?.message?.type || "unknown");
+  console.log("   Event type:", eventType);
   console.log("   Signature present:", !!signature);
   console.log("   Payload preview:", payload.substring(0, 200) + "...");
 
@@ -40,30 +44,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
   }
 
-  const data = JSON.parse(payload);
   const supabase = await createClient();
 
   try {
-    const signature = request.headers.get("x-vapi-signature") || "";
-    const payload = await request.text();
-
-    // Parse payload first (before using it)
-    const parsedData = JSON.parse(payload);
-    const eventType = parsedData.message?.type || parsedData.type || "unknown";
-    
-    console.log("📥 Vapi webhook received");
-    console.log("   Event type:", eventType);
-    console.log("   Signature present:", !!signature);
-    console.log("   Payload preview:", payload.substring(0, 200) + "...");
-
-    // Verify webhook signature (CRITICAL SECURITY)
-    if (!verifyVapiSignature(payload, signature)) {
-      console.log("❌ Rejecting webhook - invalid signature");
-      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
-    }
-
-    const supabase = await createClient();
-
     switch (eventType) {
       case "call-ended":
       case "end-of-call-report":  // Vapi's actual event name
