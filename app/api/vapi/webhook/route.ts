@@ -44,7 +44,13 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
 
   try {
-    const eventType = data.message?.type || data.type || "unknown";
+    const signature = request.headers.get("x-vapi-signature") || "";
+    const payload = await request.text();
+
+    // Parse payload first (before using it)
+    const parsedData = JSON.parse(payload);
+    const eventType = parsedData.message?.type || parsedData.type || "unknown";
+    
     console.log("📥 Vapi webhook received");
     console.log("   Event type:", eventType);
     console.log("   Signature present:", !!signature);
@@ -56,18 +62,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
     }
 
-    const data = JSON.parse(payload);
     const supabase = await createClient();
 
     switch (eventType) {
       case "call-ended":
       case "end-of-call-report":  // Vapi's actual event name
-        await handleCallEnded(data.message || data, supabase);
+        await handleCallEnded(parsedData.message || parsedData, supabase);
         break;
       case "function-call":
-        return await handleFunctionCall(data.message || data, supabase);
+        return await handleFunctionCall(parsedData.message || parsedData, supabase);
       case "call-started":
-        await handleCallStarted(data.message || data, supabase);
+        await handleCallStarted(parsedData.message || parsedData, supabase);
         break;
       case "speech-update":
       case "conversation-update":
