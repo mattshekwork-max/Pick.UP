@@ -44,17 +44,40 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
 
   try {
-    switch (data.message?.type) {
+    const eventType = data.message?.type || data.type || "unknown";
+    console.log("📥 Vapi webhook received");
+    console.log("   Event type:", eventType);
+    console.log("   Signature present:", !!signature);
+    console.log("   Payload preview:", payload.substring(0, 200) + "...");
+
+    // Verify webhook signature (CRITICAL SECURITY)
+    if (!verifyVapiSignature(payload, signature)) {
+      console.log("❌ Rejecting webhook - invalid signature");
+      return NextResponse.json({ error: "Invalid signature" }, { status: 401 });
+    }
+
+    const data = JSON.parse(payload);
+    const supabase = await createClient();
+
+    switch (eventType) {
       case "call-ended":
-        await handleCallEnded(data.message, supabase);
+      case "end-of-call-report":  // Vapi's actual event name
+        await handleCallEnded(data.message || data, supabase);
         break;
       case "function-call":
-        return await handleFunctionCall(data.message, supabase);
+        return await handleFunctionCall(data.message || data, supabase);
       case "call-started":
-        await handleCallStarted(data.message, supabase);
+        await handleCallStarted(data.message || data, supabase);
+        break;
+      case "speech-update":
+      case "conversation-update":
+      case "status-update":
+      case "user-interrupted":
+        // Ignore these event types - we only care about call lifecycle events
+        console.log("ℹ️ Ignoring event type:", eventType);
         break;
       default:
-        console.log("Unknown Vapi event type:", data.message?.type);
+        console.log("Unknown Vapi event type:", eventType);
     }
 
     // Always return 200 to Vapi
