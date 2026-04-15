@@ -98,11 +98,17 @@ async function handleCallStarted(message: any, supabase: any) {
 }
 
 async function handleCallEnded(message: any, supabase: any) {
-  const { call } = message;
-  const businessPhone = call.customer?.number;
+  console.log("📞 Call ended - Full message:", JSON.stringify(message, null, 2));
+  
+  // Vapi sends data in different structures - handle all cases
+  const call = message.call || message.data?.call || message;
+  const analysis = message.analysis || message.data?.analysis || {};
+  
+  const businessPhone = call.customer?.number || call.phoneNumber;
 
-  console.log("📞 Call ended - Business phone:", businessPhone);
-  console.log("📞 Full call object:", JSON.stringify(call, null, 2));
+  console.log("📞 Business phone:", businessPhone);
+  console.log("📞 Call summary:", call.summary || analysis.summary);
+  console.log("📞 Call transcript:", call.transcript?.substring(0, 200));
 
   // Find business by phone number
   const { data: business, error: businessError } = await supabase
