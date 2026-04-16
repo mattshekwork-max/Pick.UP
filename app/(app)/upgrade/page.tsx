@@ -138,3 +138,5 @@ export default function UpgradePage() {
     </div>
   );
 }
+
+export const dynamic = "force-dynamic";
