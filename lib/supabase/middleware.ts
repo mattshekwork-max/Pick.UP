@@ -4,6 +4,12 @@ import { NextResponse, type NextRequest } from "next/server";
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({ request });
 
+  // Check if env vars are available
+  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
+    console.warn('Supabase env vars not available in middleware');
+    return supabaseResponse;
+  }
+
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -27,7 +33,12 @@ export async function updateSession(request: NextRequest) {
 
   // Refresh the session — this is required for Server Components to read
   // an up-to-date session cookie.
-  await supabase.auth.getUser();
+  try {
+    await supabase.auth.getUser();
+  } catch (error) {
+    // Silently fail - user might not be logged in
+    console.log('Session refresh failed (might not be logged in):', error);
+  }
 
   return supabaseResponse;
 }
