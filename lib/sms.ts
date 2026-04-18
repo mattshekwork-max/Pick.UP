@@ -4,6 +4,7 @@
 const TWILIO_ACCOUNT_SID = process.env.TWILIO_ACCOUNT_SID;
 const TWILIO_AUTH_TOKEN = process.env.TWILIO_AUTH_TOKEN;
 const TWILIO_PHONE_NUMBER = process.env.TWILIO_PHONE_NUMBER;
+const TWILIO_MESSAGING_SERVICE_SID = process.env.TWILIO_MESSAGING_SERVICE_SID;
 
 interface CallSummary {
   callerName?: string;
@@ -24,7 +25,7 @@ export async function sendCallSummarySMS(
   businessName: string,
   call: CallSummary
 ): Promise<{ success: boolean; messageId?: string; error?: string }> {
-  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
+  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || (!TWILIO_PHONE_NUMBER && !TWILIO_MESSAGING_SERVICE_SID)) {
     console.error("Twilio credentials not configured");
     return { success: false, error: "SMS not configured" };
   }
@@ -63,14 +64,16 @@ export async function sendCallSummarySMS(
       {
         method: "POST",
         headers: {
-          Authorization: `Basic ${Buffer.from(
+          Authorization: `Basic ${btoa(
             `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
-          ).toString("base64")}`,
+          )}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
           To: to,
-          From: TWILIO_PHONE_NUMBER,
+          ...(TWILIO_MESSAGING_SERVICE_SID
+            ? { MessagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+            : { From: TWILIO_PHONE_NUMBER! }),
           Body: message,
         }),
       }
@@ -96,7 +99,7 @@ export async function sendCallSummarySMS(
 export async function sendTestSMS(
   to: string
 ): Promise<{ success: boolean; error?: string }> {
-  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || !TWILIO_PHONE_NUMBER) {
+  if (!TWILIO_ACCOUNT_SID || !TWILIO_AUTH_TOKEN || (!TWILIO_PHONE_NUMBER && !TWILIO_MESSAGING_SERVICE_SID)) {
     return { success: false, error: "Twilio not configured" };
   }
 
@@ -106,14 +109,16 @@ export async function sendTestSMS(
       {
         method: "POST",
         headers: {
-          Authorization: `Basic ${Buffer.from(
+          Authorization: `Basic ${btoa(
             `${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}`
-          ).toString("base64")}`,
+          )}`,
           "Content-Type": "application/x-www-form-urlencoded",
         },
         body: new URLSearchParams({
           To: to,
-          From: TWILIO_PHONE_NUMBER,
+          ...(TWILIO_MESSAGING_SERVICE_SID
+            ? { MessagingServiceSid: TWILIO_MESSAGING_SERVICE_SID }
+            : { From: TWILIO_PHONE_NUMBER! }),
           Body: "📞 Pick.UP test: Your SMS notifications are working! You'll receive call summaries here.",
         }),
       }

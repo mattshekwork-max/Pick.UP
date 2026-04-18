@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { checkAvailability, createCalendarEvent, getAvailableSlots } from "@/lib/calendar";
 import { sendCallSummarySMS, logSMS } from "@/lib/sms";
 import { createHmac } from "crypto";
@@ -29,14 +30,48 @@ export async function POST(request: NextRequest) {
   const signature = request.headers.get("x-vapi-signature") || "";
   const payload = await request.text();
 
+  console.log("📥 WEBHOOK HIT!");
+  console.log("   URL:", request.url);
+  console.log("   Signature present:", !!signature);
+  console.log("   Payload length:", payload.length);
+
   // Parse payload first (before using it)
-  const parsedData = JSON.parse(payload);
+  let parsedData;
+  try {
+    parsedData = JSON.parse(payload);
+  } catch (e) {
+    console.error("Failed to parse payload:", e);
+    return NextResponse.json({ error: "Invalid JSON" }, { status: 400 });
+  }
+  
   const eventType = parsedData.message?.type || parsedData.type || "unknown";
   
   console.log("📥 Vapi webhook received");
   console.log("   Event type:", eventType);
-  console.log("   Signature present:", !!signature);
-  console.log("   Payload preview:", payload.substring(0, 200) + "...");
+  console.log("   Call ID:", parsedData.call?.id || parsedData.message?.call?.id || "N/A");
+
+  // Log webhook to database for debugging (using service role key)
+  console.log("💾 Attempting to log to database...");
+  try {
+    const logSupabase = createAdminClient();
+    const logResult = await logSupabase.from("webhook_logs").insert({
+      event_type: eventType,
+      payload: parsedData,
+      created_at: new Date().toISOString(),
+    });
+    
+    if (logResult.error) {
+      console.log("❌ Webhook log insert FAILED:", logResult.error);
+      console.log("   Error message:", logResult.error.message);
+      console.log("   Error details:", logResult.error.details);
+      console.log("   Error hint:", logResult.error.hint);
+    } else {
+      console.log("✅ Webhook logged to database successfully!");
+    }
+  } catch (e: any) {
+    console.log("❌ Webhook log threw exception:", e);
+    console.log("   Error:", e.message);
+  }
 
   // Verify webhook signature (CRITICAL SECURITY)
   if (!verifyVapiSignature(payload, signature)) {
@@ -61,8 +96,9 @@ export async function POST(request: NextRequest) {
       case "conversation-update":
       case "status-update":
       case "user-interrupted":
-        // Ignore these event types - we only care about call lifecycle events
-        console.log("ℹ️ Ignoring event type:", eventType);
+        // TEMPORARY: Send test SMS for these events too
+        console.log("📤 TEST: Sending SMS for event:", eventType);
+        await sendTestSMSForEvent(eventType, parsedData);
         break;
       default:
         console.log("Unknown Vapi event type:", eventType);
@@ -404,6 +440,28 @@ function formatBusinessHours(hours: any): string {
     .filter(([_, h]: [string, any]) => !h.closed)
     .map(([day, h]: [string, any]) => `${day}: ${h.open}-${h.close}`);
   return days.join(", ") || "Please call for hours";
+}
+
+// TEMPORARY TEST FUNCTION - Send SMS for any webhook event
+async function sendTestSMSForEvent(eventType: string, data: any) {
+  try {
+    // Use your phone number from the screenshot
+    const testPhoneNumber = "+16193967530";
+    const message = `🧪 WEBHOOK TEST: ${eventType}\n\nCall ID: ${data.call?.id || 'N/A'}\nTime: ${new Date().toLocaleTimeString()}`;
+    
+    console.log("📤 Sending test SMS:", message);
+    
+    const result = await sendCallSummarySMS(testPhoneNumber, "Pick.UP Test", {
+      callerName: `Test: ${eventType}`,
+      callerPhone: "+15550000000",
+      duration: 0,
+      summary: message,
+    });
+    
+    console.log("📊 Test SMS result:", result);
+  } catch (error: any) {
+    console.error("❌ Test SMS failed:", error.message);
+  }
 }
 
 export async function OPTIONS(request: NextRequest) {

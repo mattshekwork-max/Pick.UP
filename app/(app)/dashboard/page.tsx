@@ -47,7 +47,7 @@ export default async function Dashboard() {
     .limit(5);
 
   const hasBusinessProfile = !!business;
-  const hasPhoneNumber = !!business?.phone_number;
+  const hasPhoneNumber = !!business?.ringley_phone_number || !!business?.phone_number;
   const hasGreeting = !!business?.greeting_message;
 
   const setupSteps = [

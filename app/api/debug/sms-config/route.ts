@@ -19,9 +19,9 @@ export async function GET() {
         {
           method: "POST",
           headers: {
-            Authorization: `Basic ${Buffer.from(
+            Authorization: `Basic ${btoa(
               `${config.TWILIO_ACCOUNT_SID}:${config.TWILIO_AUTH_TOKEN}`
-            ).toString("base64")}`,
+            )}`,
             "Content-Type": "application/x-www-form-urlencoded",
           },
           body: new URLSearchParams({
