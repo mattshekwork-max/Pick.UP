@@ -5,7 +5,7 @@ import nodemailer from 'nodemailer';
 
 const EMAIL_USER = process.env.ZOHO_EMAIL_USER || 'support@pickuphone.com';
 const EMAIL_PASS = process.env.ZOHO_EMAIL_PASSWORD;
-const ZOHO_SMTP_HOST = 'smtp.zoho.com';
+const ZOHO_SMTP_HOST = 'smtp.zeptomail.com';
 const ZOHO_SMTP_PORT = 587;
 
 interface CallNotification {
