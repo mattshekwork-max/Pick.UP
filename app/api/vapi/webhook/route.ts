@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkAvailability, createCalendarEvent, getAvailableSlots } from "@/lib/calendar";
 import { sendCallSummarySMS, logSMS } from "@/lib/sms";
+import { sendCallSummaryEmail } from "@/lib/email";
 import { createHmac } from "crypto";
 import { addCorsHeaders, handlePreflight } from "@/lib/middleware/security";
 
@@ -220,6 +221,42 @@ async function handleCallEnded(message: any, supabase: any) {
     }
   } else {
     console.log("⚠️  SMS not sent - business.transfer_phone_number is not set");
+  }
+
+  // Send email recap to business owner
+  console.log("📧 Checking email configuration...");
+  try {
+    const { data: user } = await supabase
+      .from("users")
+      .select("email")
+      .eq("id", business.user_id)
+      .single();
+    
+    if (user?.email) {
+      console.log("📧 Sending email recap to:", user.email);
+      const emailResult = await sendCallSummaryEmail(
+        user.email,
+        business.business_name,
+        {
+          callerName: call.customer?.name,
+          callerPhone: call.customer?.number,
+          duration: call.durationSeconds,
+          summary: call.summary,
+          wasTransferred: call.transferOccurred,
+          transcript: call.transcript,
+        }
+      );
+      
+      if (emailResult.success) {
+        console.log("✅ Email sent:", emailResult.messageId);
+      } else {
+        console.log("❌ Email failed:", emailResult.error);
+      }
+    } else {
+      console.log("⚠️  No user email found for business");
+    }
+  } catch (emailError: any) {
+    console.error("❌ Email error:", emailError.message);
   }
 }
 
