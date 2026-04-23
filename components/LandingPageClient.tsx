@@ -47,7 +47,7 @@ export function LandingPageClient() {
     {
       number: "3",
       title: 'Pick.UP Takes Over',
-      description: 'Every call is answered, handled, and summarized via SMS so nothing slips through.',
+      description: 'Every call is answered, handled, and summarized by email so nothing slips through.',
     }
   ];
 
@@ -58,8 +58,8 @@ export function LandingPageClient() {
       icon: Calendar
     },
     {
-      title: 'SMS Call Summaries',
-      description: 'Get a text after every call with key details',
+      title: 'Email Call Summaries',
+      description: 'Get a clean recap after every call with the details that matter',
       icon: MessageSquare
     },
     {
@@ -133,7 +133,7 @@ export function LandingPageClient() {
               className="text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed"
               variants={fadeInUp}
             >
-              Pick.UP is an AI receptionist that picks up your business calls, books appointments, answers common questions, and sends you a summary. Set it up in minutes, not days.
+              Pick.UP is an AI receptionist that answers your business calls, books appointments, handles common questions, and sends a clear follow-up recap after every conversation.
             </motion.p>
 
             <motion.div
@@ -290,10 +290,13 @@ export function LandingPageClient() {
               <p className="text-gray-500 mb-6">Forever free</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center gap-2 text-gray-600">
-                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Core features
+                  <Check className="w-4 h-4 text-green-600 shrink-0" /> AI call answering
                 </li>
                 <li className="flex items-center gap-2 text-gray-600">
-                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Community support
+                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Appointment capture
+                </li>
+                <li className="flex items-center gap-2 text-gray-600">
+                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Email call recaps
                 </li>
               </ul>
               <Link href="/signup">
@@ -315,13 +318,13 @@ export function LandingPageClient() {
                   <Check className="w-4 h-4 text-green-600 shrink-0" /> Everything in Free
                 </li>
                 <li className="flex items-center gap-2 text-gray-600">
-                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Unlimited access
+                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Dedicated business number
+                </li>
+                <li className="flex items-center gap-2 text-gray-600">
+                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Smart call routing
                 </li>
                 <li className="flex items-center gap-2 text-gray-600">
                   <Check className="w-4 h-4 text-green-600 shrink-0" /> Priority support
-                </li>
-                <li className="flex items-center gap-2 text-gray-600">
-                  <Check className="w-4 h-4 text-green-600 shrink-0" /> Advanced features
                 </li>
               </ul>
               <Link href="/signup">
@@ -376,6 +379,23 @@ export function LandingPageClient() {
           </motion.div>
         </motion.div>
       </section>
+
+      {/* Footer */}
+      <footer className="w-full px-4 py-8 bg-gray-50 border-t border-gray-200">
+        <div className="container mx-auto max-w-6xl flex flex-col md:flex-row items-center justify-between gap-4">
+          <p className="text-sm text-gray-500">
+            © {new Date().getFullYear()} Pick.UP. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <Link href="/privacy" className="text-sm text-gray-500 hover:text-[#0D9488] transition-colors">
+              Privacy Policy
+            </Link>
+            <Link href="/terms" className="text-sm text-gray-500 hover:text-[#0D9488] transition-colors">
+              Terms of Service
+            </Link>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }
