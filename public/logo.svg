@@ -1,26 +1,20 @@
-<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="128" height="128" rx="24" fill="#14B8A6"/>
-  <g transform="translate(20 12) scale(0.88)">
-    <!-- Phone body - dark gray -->
-    <rect x="25" y="8" width="54" height="88" rx="8" fill="#374151"/>
-    <!-- Screen -->
-    <rect x="29" y="14" width="46" height="70" rx="4" fill="#1F2937"/>
-    <!-- Top camera/notch area - lime green accent -->
-    <rect x="42" y="11" width="18" height="5" rx="2.5" fill="#84CC16"/>
-    <!-- Home button / bar at bottom - lime green -->
-    <rect x="42" y="86" width="18" height="4" rx="2" fill="#84CC16"/>
-    <!-- Side button - lime green -->
-    <rect x="79" y="30" width="4" height="14" rx="1" fill="#84CC16"/>
-    <!-- Screen content - simplified app icons -->
-    <rect x="33" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.8"/>
-    <rect x="47" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.6"/>
-    <rect x="61" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.4"/>
-    <!-- Phone receiver lines on screen -->
-    <rect x="35" y="38" width="34" height="3" rx="1.5" fill="#84CC16" opacity="0.7"/>
-    <rect x="35" y="46" width="28" height="3" rx="1.5" fill="#84CC16" opacity="0.5"/>
-    <rect x="35" y="54" width="20" height="3" rx="1.5" fill="#84CC16" opacity="0.3"/>
-    <!-- Call button on screen -->
-    <circle cx="52" cy="72" r="10" fill="#84CC16"/>
-    <path d="M48 72 L52 68 L56 72 M52 68 L52 76" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 122 122">
+  <rect width="122" height="122" rx="24" fill="#14B8A6"/>
+  <g transform="translate(16 18) scale(0.9)">
+    <!-- Phone body - white -->
+    <rect x="25" y="8" width="54" height="88" rx="8" fill="white"/>
+    <!-- Screen area - light gray -->
+    <rect x="29" y="14" width="46" height="70" rx="4" fill="#F3F4F6"/>
+    <!-- Top speaker/camera - gray dot -->
+    <circle cx="52" cy="11" r="2" fill="#9CA3AF"/>
+    <!-- Home button - teal circle -->
+    <circle cx="52" cy="88" r="5" fill="#14B8A6"/>
+    <!-- Side buttons -->
+    <rect x="79" y="30" width="3" height="12" rx="1" fill="#E5E7EB"/>
+    <rect x="79" y="48" width="3" height="12" rx="1" fill="#E5E7EB"/>
+    <!-- Screen content - call UI -->
+    <circle cx="52" cy="50" r="15" fill="#14B8A6"/>
+    <!-- Phone icon in circle -->
+    <path d="M47 46 C47 44 48 43 50 43 L54 43 C56 43 57 44 57 46 L57 50 C57 52 56 53 54 53 L53 53 L51 55 L51 53 L50 53 C48 53 47 52 47 50 Z" fill="white"/>
   </g>
 </svg>
