@@ -361,21 +361,6 @@ export default function BusinessSetupPage() {
               <CardDescription>Connect Google Calendar to check availability and book appointments</CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="p-4 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 rounded-xl">
-                <h4 className="font-semibold text-amber-900 dark:text-amber-100 mb-2 flex items-center gap-2">
-                  ⚠️ Google Verification Pending
-                </h4>
-                <p className="text-sm text-amber-800 dark:text-amber-200 mb-2">
-                  Pick.UP is currently undergoing Google OAuth verification. Until complete, you may see a warning screen when connecting your calendar.
-                </p>
-                <p className="text-sm text-amber-800 dark:text-amber-200">
-                  <strong>What to do:</strong> Click "Continue" or "Advanced" → "Go to Pick.UP (unsafe)" to proceed. Your data is secure - this is just a Google warning for unverified apps.
-                </p>
-                <p className="text-xs text-amber-700 dark:text-amber-300 mt-2 italic">
-                  We're completing verification soon! 🚀
-                </p>
-              </div>
-
               {formData.googleCalendarId ? (
                 <div className="p-4 bg-green-50 rounded-xl border border-green-200">
                   <div className="flex items-center gap-3 mb-2">
