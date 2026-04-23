@@ -1,6 +1,26 @@
 <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <rect width="128" height="128" rx="24" fill="#0D9488"/>
-  <g transform="translate(12 12) scale(0.82)">
-    <path d="M80.798 88.113c-4.066 0-8.92-1.223-14.562-3.667-5.641-2.444-11.118-6.111-16.43-11.002-5.229-4.973-9.142-10.08-11.738-15.322-2.596-5.241-3.894-10.112-3.894-14.613 0-3.197.843-5.685 2.529-7.467 1.77-1.864 4.323-2.797 7.661-2.797h7.332c1.989 0 3.471.622 4.447 1.864.977 1.242 1.709 3.019 2.197 5.33l2.396 10.794c.406 1.865.366 3.42-.122 4.666-.488 1.246-1.383 2.413-2.685 3.501l-6.599 5.197c1.056 1.929 2.519 3.99 4.389 6.185 1.953 2.114 4.14 4.302 6.561 6.563 2.535 2.446 4.878 4.556 7.028 6.33 2.152 1.774 4.313 3.285 6.484 4.535l4.886-6.641c1.14-1.531 2.338-2.517 3.594-2.956 1.257-.439 2.768-.477 4.533-.115l10.092 2.377c2.28.514 4.023 1.271 5.23 2.272 1.289 1 1.934 2.548 1.934 4.645v7.172c0 3.34-.954 5.918-2.863 7.732-1.826 1.817-4.332 2.725-7.516 2.725Z" fill="white"/>
+  <rect width="128" height="128" rx="24" fill="#14B8A6"/>
+  <g transform="translate(20 12) scale(0.88)">
+    <!-- Phone body - dark gray -->
+    <rect x="25" y="8" width="54" height="88" rx="8" fill="#374151"/>
+    <!-- Screen -->
+    <rect x="29" y="14" width="46" height="70" rx="4" fill="#1F2937"/>
+    <!-- Top camera/notch area - lime green accent -->
+    <rect x="42" y="11" width="18" height="5" rx="2.5" fill="#84CC16"/>
+    <!-- Home button / bar at bottom - lime green -->
+    <rect x="42" y="86" width="18" height="4" rx="2" fill="#84CC16"/>
+    <!-- Side button - lime green -->
+    <rect x="79" y="30" width="4" height="14" rx="1" fill="#84CC16"/>
+    <!-- Screen content - simplified app icons -->
+    <rect x="33" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.8"/>
+    <rect x="47" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.6"/>
+    <rect x="61" y="20" width="10" height="10" rx="2" fill="#84CC16" opacity="0.4"/>
+    <!-- Phone receiver lines on screen -->
+    <rect x="35" y="38" width="34" height="3" rx="1.5" fill="#84CC16" opacity="0.7"/>
+    <rect x="35" y="46" width="28" height="3" rx="1.5" fill="#84CC16" opacity="0.5"/>
+    <rect x="35" y="54" width="20" height="3" rx="1.5" fill="#84CC16" opacity="0.3"/>
+    <!-- Call button on screen -->
+    <circle cx="52" cy="72" r="10" fill="#84CC16"/>
+    <path d="M48 72 L52 68 L56 72 M52 68 L52 76" stroke="white" stroke-width="2" stroke-linecap="round"/>
   </g>
 </svg>
