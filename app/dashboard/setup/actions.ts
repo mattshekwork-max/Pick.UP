@@ -229,9 +229,12 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     return { success: false, error: `${result.error.message || 'Failed to save'} - ${result.error.details || ''}`.trim() };
   }
 
-  // Vapi assistant update: Do manually in Vapi dashboard for now
-  // API integration needs debugging - manual update is more reliable
-  console.log("Business saved. Update Vapi assistant manually in dashboard.");
+  // Update Vapi assistant with new business info
+  await updateVapiAssistant({
+    ...businessData,
+    faqs: faqs,
+    services: services,
+  });
   
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/setup");
