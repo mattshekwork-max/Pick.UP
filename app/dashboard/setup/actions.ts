@@ -23,11 +23,16 @@ interface BusinessFormData {
 async function updateVapiAssistant(business: any) {
   const VAPI_API_KEY = process.env.VAPI_API_KEY;
   const VAPI_ASSISTANT_ID = process.env.VAPI_ASSISTANT_ID;
+  
+  // Use the user's specific assistant ID, fall back to env var
+  const assistantId = business.vapi_assistant_id || VAPI_ASSISTANT_ID;
 
-  if (!VAPI_API_KEY || !VAPI_ASSISTANT_ID) {
+  if (!VAPI_API_KEY || !assistantId) {
     console.log("Vapi not configured, skipping assistant update");
     return;
   }
+  
+  console.log("Updating Vapi assistant:", assistantId, "for business:", business.business_name);
 
   // Format FAQs for system message
   const faqsText = business.faqs?.length > 0
@@ -103,7 +108,7 @@ END CALL GRACEFULLY:
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout
 
-    const response = await fetch(`https://api.vapi.ai/v1/assistant/${VAPI_ASSISTANT_ID}`, {
+    const response = await fetch(`https://api.vapi.ai/v1/assistant/${assistantId}`, {
       method: "PATCH",
       headers: {
         "Authorization": `Bearer ${VAPI_API_KEY}`,
@@ -229,12 +234,19 @@ export async function saveBusinessProfile(formData: BusinessFormData) {
     return { success: false, error: `${result.error.message || 'Failed to save'} - ${result.error.details || ''}`.trim() };
   }
 
-  // Update Vapi assistant with new business info
-  await updateVapiAssistant({
-    ...businessData,
-    faqs: faqs,
-    services: services,
-  });
+  // Update Vapi assistant with new business info (only if user has a vapi assistant)
+  const { data: updatedBusiness } = await supabase
+    .from("businesses")
+    .select("*")
+    .eq("user_id", user.id)
+    .single();
+  
+  if (updatedBusiness?.vapi_assistant_id) {
+    await updateVapiAssistant(updatedBusiness);
+    console.log("✅ Vapi assistant updated for:", updatedBusiness.business_name);
+  } else {
+    console.log("ℹ️ No Vapi assistant yet for this user (phone not provisioned)");
+  }
   
   revalidatePath("/dashboard");
   revalidatePath("/dashboard/setup");
