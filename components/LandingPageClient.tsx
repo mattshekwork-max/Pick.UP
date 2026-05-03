@@ -284,10 +284,10 @@ export function LandingPageClient() {
               &ldquo;I used to miss 4-5 calls a day between jobs. Pick.UP books them straight into my calendar while I&rsquo;m on a roof. Pays for itself in the first week.&rdquo;
             </blockquote>
             <div className="flex items-center justify-center gap-4">
-              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-lg">M</div>
+              <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-gray-500 font-bold text-lg">T</div>
               <div className="text-left">
-                <p className="font-semibold text-gray-900">Marcus Chen</p>
-                <p className="text-sm text-gray-600">Chen Roofing, San Diego</p>
+                <p className="font-semibold text-gray-900">Tee Galindo</p>
+                <p className="text-sm text-gray-600">Alfredo&rsquo;s Roofing, San Diego</p>
               </div>
             </div>
           </motion.div>
