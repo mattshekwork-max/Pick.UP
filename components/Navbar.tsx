@@ -18,7 +18,7 @@ import { Menu, Moon, Sun, Phone } from "lucide-react";
 import type { User } from "@supabase/supabase-js";
 import { useTheme } from "next-themes";
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "My App";
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Pick.UP";
 
 export function Navbar() {
   const [user, setUser] = useState<User | null>(null);

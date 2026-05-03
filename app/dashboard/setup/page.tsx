@@ -14,6 +14,15 @@ import { saveBusinessProfile, getBusinessProfile } from "./actions";
 import { provisionVapiPhoneNumber } from "./vapi-actions";
 
 const DAYS = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] as const;
+const DAY_LABELS: Record<(typeof DAYS)[number], string> = {
+  Monday: "Monday",
+  Tuesday: "Tuesday",
+  Wednesday: "Wed.",
+  Thursday: "Thur.",
+  Friday: "Friday",
+  Saturday: "Saturday",
+  Sunday: "Sunday",
+};
 
 type DaySchedule = { open: string; close: string; closed: boolean };
 type BusinessHours = Record<string, DaySchedule>;
@@ -219,7 +228,7 @@ export default function BusinessSetupPage() {
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="transferPhone">Your Phone Number (for transfers & SMS summaries)</Label>
+                <Label htmlFor="transferPhone">Your Phone Number (for call transfers)</Label>
                 <Input
                   id="transferPhone"
                   value={formData.transferPhone}
@@ -227,7 +236,7 @@ export default function BusinessSetupPage() {
                   placeholder="(555) 987-6543"
                 />
                 <p className="text-sm text-muted-foreground">
-                  Calls can be transferred to this number. You'll also receive SMS summaries of each call here.
+                  Calls can be transferred to this number when a customer needs a human. Call recaps are sent by email.
                 </p>
               </div>
             </CardContent>
@@ -318,7 +327,7 @@ export default function BusinessSetupPage() {
             <CardContent className="space-y-4">
               {DAYS.map((day) => (
                 <div key={day} className="flex items-center gap-4">
-                  <div className="w-28 font-medium">{day}</div>
+                  <div className="w-28 font-medium">{DAY_LABELS[day]}</div>
                   <div className="flex items-center gap-2">
                     <Checkbox
                       id={`${day}-closed`}

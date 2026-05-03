@@ -6,8 +6,13 @@ import { Toaster } from "sonner";
 
 const inter = Inter({ subsets: ["latin"] });
 
-const appName = process.env.NEXT_PUBLIC_APP_NAME || "My App";
-const appUrl = process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000";
+function cleanEnv(value: string | undefined, fallback = "") {
+  if (!value) return fallback;
+  return value.trim().replace(/^"|"$/g, "");
+}
+
+const appName = cleanEnv(process.env.NEXT_PUBLIC_APP_NAME, "Pick.UP");
+const appUrl = cleanEnv(process.env.NEXT_PUBLIC_APP_URL, "https://pickuphone.com");
 
 export const metadata: Metadata = {
   title: {
@@ -31,6 +36,11 @@ export const metadata: Metadata = {
   robots: {
     index: true,
     follow: true,
+  },
+  icons: {
+    icon: '/favicon.png',
+    shortcut: '/favicon.png',
+    apple: '/apple-touch-icon.png',
   },
 };
 

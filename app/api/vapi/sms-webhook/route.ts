@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { sendCallSummarySMS, logSMS } from "@/lib/sms";
+import { sendCallSummarySMS, logSMS, isSMSEnabled } from "@/lib/sms";
 import { sendCallSummaryEmail } from "@/lib/email";
 
 type VapiPayload = Record<string, any>;
@@ -99,16 +99,27 @@ async function processEndOfCall(message: VapiPayload) {
     wasTransferred: Boolean(call.transferOccurred || message.transferOccurred),
   });
 
+  const { data: ownerUser, error: ownerEmailError } = await supabase
+    .from("users")
+    .select("email")
+    .eq("id", business.user_id)
+    .single();
+
+  if (ownerEmailError) {
+    console.error("[vapi/sms-webhook] owner email lookup failed", ownerEmailError);
+  }
+
+  const ownerEmail = ownerUser?.email;
+
   const recipient = normalizePhone(business.transfer_phone_number) || FALLBACK_RECAP_NUMBER;
 
+  let smsResult: { success: boolean; messageId?: string; error?: string } = { success: false };
+  let smsSkipped: string | undefined = isSMSEnabled()
+    ? undefined
+    : "SMS recaps disabled";
+
   if (!recipient) {
-    return {
-      callId,
-      businessId: business.id,
-      callRecordId: callRecord?.id,
-      smsSent: false,
-      reason: "No transfer phone or RECAP_SMS_TO configured",
-    };
+    smsSkipped = "No transfer phone or RECAP_SMS_TO configured";
   }
 
   if (callRecord?.id) {
@@ -120,45 +131,41 @@ async function processEndOfCall(message: VapiPayload) {
       .maybeSingle();
 
     if (existingSms) {
-      return {
-        callId,
-        businessId: business.id,
-        callRecordId: callRecord.id,
-        smsSent: true,
-        skipped: "SMS already sent",
-        smsId: existingSms.external_message_id,
-      };
+      smsResult = { success: true, messageId: existingSms.external_message_id };
+      smsSkipped = "SMS already sent";
     }
   }
 
-  const smsResult = await sendCallSummarySMS(recipient, business.business_name, {
-    callerName: call.customer?.name || customerPhone,
-    callerPhone: customerPhone || "Unknown",
-    duration,
-    summary,
-    wasTransferred: Boolean(call.transferOccurred || message.transferOccurred),
-  });
-
-  if (callRecord?.id) {
-    await logSMS(
-      supabase,
-      business.id,
-      callRecord.id,
-      recipient,
+  if (!smsSkipped && recipient) {
+    smsResult = await sendCallSummarySMS(recipient, business.business_name, {
+      callerName: call.customer?.name || customerPhone,
+      callerPhone: customerPhone || "Unknown",
+      duration,
       summary,
-      smsResult.success ? "sent" : "failed",
-      smsResult.messageId
-    );
+      wasTransferred: Boolean(call.transferOccurred || message.transferOccurred),
+    });
+
+    if (callRecord?.id) {
+      await logSMS(
+        supabase,
+        business.id,
+        callRecord.id,
+        recipient,
+        summary,
+        smsResult.success ? "sent" : "failed",
+        smsResult.messageId
+      );
+    }
   }
 
   // Send email notification (FREE, no registration required)
   let emailSent = false;
   let emailError: string | undefined;
   
-  if (business.email) {
+  if (ownerEmail) {
     try {
       const emailResult = await sendCallSummaryEmail(
-        business.email,
+        ownerEmail,
         business.business_name,
         {
           callerName: call.customer?.name || customerPhone,
@@ -171,7 +178,7 @@ async function processEndOfCall(message: VapiPayload) {
       );
       emailSent = emailResult.success;
       emailError = emailResult.error;
-      console.log("[vapi/sms-webhook] email", { sent: emailSent, to: business.email });
+      console.log("[vapi/sms-webhook] email", { sent: emailSent, to: ownerEmail });
     } catch (e: any) {
       emailError = e.message;
       console.error("[vapi/sms-webhook] email failed", e);
@@ -185,10 +192,11 @@ async function processEndOfCall(message: VapiPayload) {
     smsSent: smsResult.success,
     smsId: smsResult.messageId,
     smsError: smsResult.error,
+    smsSkipped,
     smsTo: recipient,
     emailSent,
     emailError,
-    emailTo: business.email || undefined,
+    emailTo: ownerEmail || undefined,
   };
 }
 

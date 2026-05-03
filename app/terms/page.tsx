@@ -16,7 +16,7 @@ export default function TermsPage() {
             <ul className="list-disc pl-6 mt-2 space-y-1">
               <li>AI phone answering and call handling</li>
               <li>Call recording and transcription</li>
-              <li>Call summary delivery via email and SMS</li>
+              <li>Call summary delivery via email</li>
               <li>Business profile management</li>
             </ul>
           </section>

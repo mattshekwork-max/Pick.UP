@@ -73,22 +73,22 @@ export default function PhoneProvisionPage() {
     <div className="min-h-screen bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-950 dark:to-gray-900">
       {/* Header */}
       <header className="bg-white dark:bg-gray-900 border-b">
-        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <div className="flex items-center gap-4">
-            <Link href="/dashboard/setup">
-              <Button variant="ghost" size="sm" className="gap-2">
+        <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 sm:py-6">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <Link href="/dashboard/setup" className="shrink-0">
+              <Button variant="ghost" size="sm" className="gap-2 px-2">
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </Button>
             </Link>
-            <div className="flex items-center gap-3">
-              <img src="/logo.png" alt="Pick.UP" className="w-8 h-8 object-contain" />
-              <div>
-                <h1 className="text-xl font-bold text-gray-900 dark:text-white">
+            <div className="flex min-w-0 items-center gap-3">
+              <img src="/logo.png" alt="Pick.UP" className="h-7 w-7 shrink-0 object-contain sm:h-8 sm:w-8" />
+              <div className="min-w-0">
+                <h1 className="text-lg font-bold leading-tight text-gray-900 dark:text-white sm:text-xl">
                   Get Your Phone Number
                 </h1>
                 {businessName && (
-                  <p className="text-sm text-gray-600 dark:text-gray-400">
+                  <p className="truncate text-sm text-gray-600 dark:text-gray-400">
                     For: {businessName}
                   </p>
                 )}
@@ -162,7 +162,7 @@ export default function PhoneProvisionPage() {
                   </li>
                   <li className="flex items-start gap-2">
                     <CheckCircle className="w-4 h-4 text-[#0D9488] mt-0.5" />
-                    <span>Add a transfer number to receive SMS call summaries</span>
+                    <span>Add a transfer number if you want Pick.UP to forward calls</span>
                   </li>
                 </ul>
               </div>
@@ -341,7 +341,7 @@ export default function PhoneProvisionPage() {
                 <ul className="space-y-1.5 text-sm text-blue-800 dark:text-blue-200">
                   <li>• Dedicated phone number for your business</li>
                   <li>• AI receptionist that answers 24/7</li>
-                  <li>• Call summaries via SMS</li>
+                  <li>• Call summaries by email</li>
                   <li>• Appointment booking</li>
                   <li>• Call forwarding options</li>
                 </ul>

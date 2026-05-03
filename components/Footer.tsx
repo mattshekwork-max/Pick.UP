@@ -1,6 +1,6 @@
 import Link from "next/link";
 
-const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "My App";
+const APP_NAME = process.env.NEXT_PUBLIC_APP_NAME || "Pick.UP";
 
 export function Footer() {
   return (

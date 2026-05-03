@@ -3,8 +3,10 @@
 
 import nodemailer from 'nodemailer';
 
-const EMAIL_USER = process.env.ZOHO_EMAIL_USER || 'support@pickuphone.com';
+const EMAIL_USER = process.env.ZOHO_EMAIL_USER;
 const EMAIL_PASS = process.env.ZOHO_EMAIL_PASSWORD;
+const EMAIL_FROM = process.env.ZOHO_EMAIL_FROM || process.env.EMAIL_FROM || 'recap@pickuphone.com';
+const EMAIL_FROM_NAME = process.env.ZOHO_EMAIL_FROM_NAME || process.env.EMAIL_FROM_NAME || 'Pick.UP';
 const ZOHO_SMTP_HOST = 'smtp.zeptomail.com';
 const ZOHO_SMTP_PORT = 587;
 
@@ -25,6 +27,11 @@ interface CallNotification {
  * Create Zoho mail transporter
  */
 function createTransporter() {
+  if (!EMAIL_USER) {
+    console.error('❌ Zoho email user not configured');
+    throw new Error('Email not configured - missing ZOHO_EMAIL_USER');
+  }
+
   if (!EMAIL_PASS) {
     console.error('❌ Zoho email password not configured');
     throw new Error('Email not configured - missing ZOHO_EMAIL_PASSWORD');
@@ -151,7 +158,8 @@ export async function sendCallSummaryEmail(
 
     // Send email
     const info = await transporter.sendMail({
-      from: `"Pick.UP" <${EMAIL_USER}>`,
+      from: `"${EMAIL_FROM_NAME}" <${EMAIL_FROM}>`,
+      replyTo: EMAIL_FROM,
       to: to,
       subject: `📞 New Call for ${businessName} - ${call.callerName || call.callerPhone}`,
       text: buildPlainText(businessName, call),

@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { checkAvailability, createCalendarEvent, getAvailableSlots } from "@/lib/calendar";
-import { sendCallSummarySMS, logSMS } from "@/lib/sms";
+import { sendCallSummarySMS, logSMS, isSMSEnabled } from "@/lib/sms";
 import { sendCallSummaryEmail } from "@/lib/email";
 import { createHmac } from "crypto";
 import { addCorsHeaders, handlePreflight } from "@/lib/middleware/security";
@@ -97,9 +97,7 @@ export async function POST(request: NextRequest) {
       case "conversation-update":
       case "status-update":
       case "user-interrupted":
-        // TEMPORARY: Send test SMS for these events too
-        console.log("📤 TEST: Sending SMS for event:", eventType);
-        await sendTestSMSForEvent(eventType, parsedData);
+        console.log("Ignored non-final Vapi event type:", eventType);
         break;
       default:
         console.log("Unknown Vapi event type:", eventType);
@@ -187,7 +185,7 @@ async function handleCallEnded(message: any, supabase: any) {
   console.log("   TWILIO_ACCOUNT_SID configured:", !!process.env.TWILIO_ACCOUNT_SID);
   console.log("   TWILIO_PHONE_NUMBER configured:", !!process.env.TWILIO_PHONE_NUMBER);
   
-  if (business.transfer_phone_number) {
+  if (isSMSEnabled() && business.transfer_phone_number) {
     console.log("📤 Sending SMS to:", business.transfer_phone_number);
     const smsResult = await sendCallSummarySMS(
       business.transfer_phone_number,
@@ -220,7 +218,7 @@ async function handleCallEnded(message: any, supabase: any) {
       console.log("❌ SMS failed:", smsResult.error);
     }
   } else {
-    console.log("⚠️  SMS not sent - business.transfer_phone_number is not set");
+    console.log("⚠️  SMS not sent - disabled or no business.transfer_phone_number");
   }
 
   // Send email recap to business owner
@@ -477,28 +475,6 @@ function formatBusinessHours(hours: any): string {
     .filter(([_, h]: [string, any]) => !h.closed)
     .map(([day, h]: [string, any]) => `${day}: ${h.open}-${h.close}`);
   return days.join(", ") || "Please call for hours";
-}
-
-// TEMPORARY TEST FUNCTION - Send SMS for any webhook event
-async function sendTestSMSForEvent(eventType: string, data: any) {
-  try {
-    // Use your phone number from the screenshot
-    const testPhoneNumber = "+16193967530";
-    const message = `🧪 WEBHOOK TEST: ${eventType}\n\nCall ID: ${data.call?.id || 'N/A'}\nTime: ${new Date().toLocaleTimeString()}`;
-    
-    console.log("📤 Sending test SMS:", message);
-    
-    const result = await sendCallSummarySMS(testPhoneNumber, "Pick.UP Test", {
-      callerName: `Test: ${eventType}`,
-      callerPhone: "+15550000000",
-      duration: 0,
-      summary: message,
-    });
-    
-    console.log("📊 Test SMS result:", result);
-  } catch (error: any) {
-    console.error("❌ Test SMS failed:", error.message);
-  }
 }
 
 export async function OPTIONS(request: NextRequest) {

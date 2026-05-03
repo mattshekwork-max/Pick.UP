@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import Link from "next/link";
 
 export const metadata: Metadata = {
-  title: "Data Deletion Request - YourApp",
+  title: "Data Deletion Request - Pick.UP",
   description: "Request deletion of your account and all associated data.",
 };
 
 export default function DataDeletionPage() {
-  const companyName = "YourApp";
-  const contactEmail = "privacy@example.com";
+  const companyName = "Pick.UP";
+  const contactEmail = "support@pickuphone.com";
 
   return (
     <main className="min-h-screen bg-white py-12 px-4">

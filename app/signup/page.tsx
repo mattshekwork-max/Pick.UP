@@ -8,13 +8,15 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Phone, CheckCircle } from "lucide-react";
+import { CheckCircle } from "lucide-react";
 
 const APP_NAME = "Pick.UP";
 
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [businessName, setBusinessName] = useState("");
+  const [businessPhone, setBusinessPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -31,6 +33,10 @@ export default function SignupPage() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
+        data: {
+          business_name: businessName,
+          business_phone: businessPhone,
+        },
       },
     });
 
@@ -81,60 +87,121 @@ export default function SignupPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center p-4 bg-[#faf9f7]">
-      <Card className="w-full max-w-md border-gray-200 shadow-lg rounded-xl">
-        <CardHeader className="text-center space-y-4">
-          <div className="flex items-center justify-center gap-3">
-            <img src="/logo.png" alt="Pick.UP" className="w-10 h-10 object-contain" />
-            <CardTitle className="text-2xl font-heading font-bold text-gray-900">{APP_NAME}</CardTitle>
+      <div className="w-full max-w-md">
+        <Card className="border-gray-200 shadow-lg rounded-xl">
+          <CardHeader className="text-center space-y-4">
+            <div className="flex items-center justify-center gap-3">
+              <img src="/logo.png" alt="Pick.UP" className="w-10 h-10 object-contain" />
+              <CardTitle className="text-2xl font-heading font-bold text-gray-900">{APP_NAME}</CardTitle>
+            </div>
+            <div>
+              <p className="text-lg font-semibold text-gray-900">Start your 14-day free trial</p>
+              <p className="text-sm text-gray-600">No credit card required. Cancel anytime.</p>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <form onSubmit={handleSignup} className="space-y-4">
+              <div className="space-y-2">
+                <Label htmlFor="businessName" className="text-gray-700">Business name</Label>
+                <Input
+                  id="businessName"
+                  type="text"
+                  required
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  placeholder="Acme Roofing"
+                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="businessPhone" className="text-gray-700">Business phone</Label>
+                <Input
+                  id="businessPhone"
+                  type="tel"
+                  required
+                  value={businessPhone}
+                  onChange={(e) => setBusinessPhone(e.target.value)}
+                  placeholder="(555) 123-4567"
+                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
+                />
+                <p className="text-xs text-gray-500">The number Pick.UP will answer for you.</p>
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="email" className="text-gray-700">Email</Label>
+                <Input
+                  id="email"
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
+                />
+              </div>
+
+              <div className="space-y-2">
+                <Label htmlFor="password" className="text-gray-700">Password</Label>
+                <Input
+                  id="password"
+                  type="password"
+                  required
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="At least 6 characters"
+                  minLength={6}
+                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
+                />
+              </div>
+
+              {error && (
+                <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
+              )}
+              <Button
+                type="submit"
+                className="w-full bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl h-11 font-medium"
+                disabled={loading}
+              >
+                {loading ? "Creating account..." : "Start Free Trial"}
+              </Button>
+            </form>
+
+            <p className="text-center text-xs text-gray-500 mt-4">
+              By signing up, you agree to our{" "}
+              <Link href="/terms" className="text-[#0D9488] hover:underline">Terms</Link>{" "}
+              and{" "}
+              <Link href="/privacy" className="text-[#0D9488] hover:underline">Privacy Policy</Link>.
+            </p>
+
+            <p className="text-center text-sm text-gray-600 mt-4">
+              Already have an account?{" "}
+              <Link href="/login" className="text-[#0D9488] hover:text-[#0d857c] font-medium hover:underline">
+                Sign in
+              </Link>
+            </p>
+          </CardContent>
+        </Card>
+
+        {/* Onboarding preview */}
+        <div className="mt-8 text-center">
+          <p className="text-sm font-medium text-gray-700 mb-3">What happens next</p>
+          <div className="flex flex-col gap-3 text-sm text-gray-600">
+            <div className="flex items-center gap-3">
+              <span className="w-6 h-6 rounded-full bg-[#0D9488]/10 flex items-center justify-center text-xs font-bold text-[#0D9488]">1</span>
+              Confirm your email
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-6 h-6 rounded-full bg-[#0D9488]/10 flex items-center justify-center text-xs font-bold text-[#0D9488]">2</span>
+              Pick a local number or forward yours
+            </div>
+            <div className="flex items-center gap-3">
+              <span className="w-6 h-6 rounded-full bg-[#0D9488]/10 flex items-center justify-center text-xs font-bold text-[#0D9488]">3</span>
+              Add hours and services — Pick.UP goes live
+            </div>
           </div>
-          <CardDescription className="text-gray-600">Create your account</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSignup} className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="email" className="text-gray-700">Email</Label>
-              <Input
-                id="email"
-                type="email"
-                placeholder="you@example.com"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="password" className="text-gray-700">Password</Label>
-              <Input
-                id="password"
-                type="password"
-                placeholder="At least 6 characters"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                minLength={6}
-                className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
-              />
-            </div>
-            {error && (
-              <p className="text-sm text-red-600 bg-red-50 p-3 rounded-lg">{error}</p>
-            )}
-            <Button 
-              type="submit" 
-              className="w-full bg-[#0D9488] hover:bg-[#0d857c] text-white rounded-xl h-11 font-medium" 
-              disabled={loading}
-            >
-              {loading ? "Creating account..." : "Create account"}
-            </Button>
-          </form>
-          <p className="text-center text-sm text-gray-600 mt-6">
-            Already have an account?{" "}
-            <Link href="/login" className="text-[#0D9488] hover:text-[#0d857c] font-medium hover:underline">
-              Sign in
-            </Link>
-          </p>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 }

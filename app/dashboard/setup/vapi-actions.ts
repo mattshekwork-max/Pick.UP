@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 
 const VAPI_API_KEY = process.env.VAPI_API_KEY;
+const VAPI_SERVER_URL = process.env.VAPI_SERVER_URL || "https://www.pickuphone.com/api/vapi/sms-webhook";
 
 interface ProvisionPhoneResult {
   success: boolean;
@@ -51,6 +52,9 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
         provider: "vapi",
         numberDesiredAreaCode: areaCode,
         name: `Pick.UP Number ${areaCode}`,
+        server: {
+          url: VAPI_SERVER_URL,
+        },
       }),
     });
 
@@ -98,6 +102,9 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
         firstMessage: business.greeting_message || `Thank you for calling ${business.business_name}! How can I help you today?`,
         voicemailMessage: `You've reached ${business.business_name}. Please leave a message and we'll get back to you.`,
         recordingEnabled: true,
+        server: {
+          url: VAPI_SERVER_URL,
+        },
       }),
     });
 
@@ -119,6 +126,9 @@ export async function provisionVapiPhoneNumber(areaCode: string): Promise<Provis
       },
       body: JSON.stringify({
         assistantId,
+        server: {
+          url: VAPI_SERVER_URL,
+        },
       }),
     });
 
@@ -319,6 +329,9 @@ export async function updateVapiAssistant(businessId: number): Promise<{ success
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        server: {
+          url: VAPI_SERVER_URL,
+        },
         model: {
           provider: "openai",
           model: "gpt-4o",
