@@ -236,7 +236,7 @@ export function LandingPageClient() {
               What Pick.UP Does on Every Call
             </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Real conversations, real results. Not a phone tree.
+              Real conversations, Real results. Not a phone tree.
             </p>
           </motion.div>
 
