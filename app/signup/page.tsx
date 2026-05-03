@@ -15,8 +15,6 @@ const APP_NAME = "Pick.UP";
 export default function SignupPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [businessName, setBusinessName] = useState("");
-  const [businessPhone, setBusinessPhone] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
@@ -33,10 +31,6 @@ export default function SignupPage() {
       password,
       options: {
         emailRedirectTo: `${window.location.origin}/auth/callback`,
-        data: {
-          business_name: businessName,
-          business_phone: businessPhone,
-        },
       },
     });
 
@@ -101,33 +95,6 @@ export default function SignupPage() {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSignup} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="businessName" className="text-gray-700">Business name</Label>
-                <Input
-                  id="businessName"
-                  type="text"
-                  required
-                  value={businessName}
-                  onChange={(e) => setBusinessName(e.target.value)}
-                  placeholder="Acme Roofing"
-                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
-                />
-              </div>
-
-              <div className="space-y-2">
-                <Label htmlFor="businessPhone" className="text-gray-700">Business phone</Label>
-                <Input
-                  id="businessPhone"
-                  type="tel"
-                  required
-                  value={businessPhone}
-                  onChange={(e) => setBusinessPhone(e.target.value)}
-                  placeholder="(555) 123-4567"
-                  className="rounded-xl border-gray-300 focus:border-[#0D9488] focus:ring-[#0D9488]"
-                />
-                <p className="text-xs text-gray-500">The number Pick.UP will answer for you.</p>
-              </div>
-
               <div className="space-y-2">
                 <Label htmlFor="email" className="text-gray-700">Email</Label>
                 <Input
