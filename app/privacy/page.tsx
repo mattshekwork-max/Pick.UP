@@ -39,21 +39,48 @@ export default function PrivacyPage() {
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-white mb-3">4. Data Retention</h2>
-            <p>Call recordings and transcripts are retained for 30 days unless you request deletion. Account information is retained until account deletion.</p>
+            <h2 className="text-xl font-semibold text-white mb-3">4. Google Calendar Data</h2>
+            <p>
+              If you choose to connect your Google Calendar to Pick.UP, we access your calendar only to support
+              appointment scheduling and availability checks that you request as part of the service. This may
+              include reading calendar availability and creating, updating, or deleting calendar events on your behalf.
+            </p>
+            <p className="mt-2">
+              Pick.UP uses Google Calendar data solely to provide core product functionality, including booking
+              appointments, avoiding scheduling conflicts, and sending related call summaries or confirmations. We do
+              not use Google Calendar data for advertising, and we do not sell Google Calendar data to third parties.
+            </p>
+            <p className="mt-2">
+              You may revoke Pick.UP&apos;s access to your Google account at any time through your Google account
+              permissions settings. You may also request deletion of associated data by contacting
+              support@pickuphone.com.
+            </p>
+            <p className="mt-2">
+              Pick.UP&apos;s use of information received from Google APIs adheres to the Google API Services User Data
+              Policy, including the Limited Use requirements, where applicable.
+            </p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-white mb-3">5. Your Rights</h2>
+            <h2 className="text-xl font-semibold text-white mb-3">5. Data Retention</h2>
+            <p>
+              Call recordings and transcripts are retained for 30 days unless you request deletion. Account
+              information is retained until account deletion. Google Calendar-related data is retained only as long as
+              necessary to provide the service or as required by law.
+            </p>
+          </section>
+
+          <section>
+            <h2 className="text-xl font-semibold text-white mb-3">6. Your Rights</h2>
             <p>You can request access, correction, or deletion of your data by contacting support@pickuphone.com.</p>
           </section>
 
           <section>
-            <h2 className="text-xl font-semibold text-white mb-3">6. Contact</h2>
+            <h2 className="text-xl font-semibold text-white mb-3">7. Contact</h2>
             <p>For privacy concerns, contact us at support@pickuphone.com.</p>
           </section>
 
-          <p className="text-gray-500 pt-4 border-t border-gray-800">Last updated: April 2026</p>
+          <p className="text-gray-500 pt-4 border-t border-gray-800">Last updated: May 2026</p>
         </div>
       </div>
     </div>
